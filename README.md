@@ -3,14 +3,20 @@
 Build the JAR file:
 
 ```
+cd SWASampleSeller
 mvn package
+```
+
+Edit configuration:
+
+```
+vi src/main/resources/config.json
 ```
 
 Run the web server:
 
 ```
-mvn package
-java -jar target/SWASampleSeller-1.0-SNAPSHOT.jar key.jks 8443
+java -jar target/SWASampleSeller-1.0-SNAPSHOT.jar
 ```
 
 # Warnings
@@ -18,4 +24,4 @@ java -jar target/SWASampleSeller-1.0-SNAPSHOT.jar key.jks 8443
 This application is meant for testing/demonstration purposes only.
 
 * Don't deploy this to production.
-* Don't use key.jks. Purchase your own SSL certificate.
+* Don't use `src/main/resources/key.jks`. Purchase your own SSL certificate.

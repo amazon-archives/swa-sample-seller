@@ -15,12 +15,10 @@ import java.security.cert.CertificateException;
 
 
 public class Main {
-    public static void main(String[] args) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, IOException, KeyManagementException, KeyStoreException {
-        final String keyPath = args[0];
-        final int port = Integer.parseInt(args[1]);
 
+    public static void main(String[] args) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, IOException, KeyManagementException, KeyStoreException {
         // Create sun server
-        HttpsServer sunServer = createHttpsServer(keyPath, port);
+        HttpServer sunServer = createHttpsServer(Config.getInstance().getResourcePath("/key.jks"), Config.getInstance().getPort());
 
         // Wrap sun server in a JAX-RS interface
         SunHttpJaxrsServer jaxrsServer = new SunHttpJaxrsServer();
@@ -39,7 +37,7 @@ public class Main {
      * Adapted from http://stackoverflow.com/a/34483734/1559886.
      *
      * @param keyPath Path to the key file.
-     * @param port Port on which to start the web server.
+     * @param port    Port on which to start the web server.
      * @return
      * @throws NoSuchAlgorithmException
      * @throws IOException
