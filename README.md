@@ -25,7 +25,7 @@ Edit the configuration at `src/main/resources/config.json`.
 Run the JAR file to start the web application:
 
 ```bash
-java -jar target/SWASampleSeller-1.0-SNAPSHOT.jar   # Run the JAR file.
+java -jar target/swa_sample_seller-1.0-SNAPSHOT.jar   # Run the JAR file.
 ```
 
 Visit the application at `https://127.0.0.1:YOUR_PORT_NUMBER`.

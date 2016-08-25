@@ -1,4 +1,4 @@
-package main;
+package com.github.amznlabs.swa_sample_seller;
 
 import com.github.jknack.handlebars.Context;
 import com.github.jknack.handlebars.Handlebars;

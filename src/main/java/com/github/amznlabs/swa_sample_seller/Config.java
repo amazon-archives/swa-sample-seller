@@ -1,4 +1,4 @@
-package main;
+package com.github.amznlabs.swa_sample_seller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jknack.handlebars.Handlebars;

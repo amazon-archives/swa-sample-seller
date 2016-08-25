@@ -1,4 +1,4 @@
-package main;
+package com.github.amznlabs.swa_sample_seller;
 
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
