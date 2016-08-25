@@ -4,7 +4,9 @@ import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
 import com.sun.net.httpserver.HttpsServer;
+import org.slf4j.Logger;
 import org.jboss.resteasy.plugins.server.sun.http.SunHttpJaxrsServer;
+import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.*;
 import java.io.FileInputStream;
@@ -15,6 +17,7 @@ import java.security.cert.CertificateException;
 
 
 public class Main {
+    private static final Logger logger = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, IOException, KeyManagementException, KeyStoreException {
         // Create sun server
@@ -25,20 +28,20 @@ public class Main {
         jaxrsServer.setHttpServer(sunServer);
 
         // Add resource classes
-        jaxrsServer.getDeployment().getActualResourceClasses().add(Resource.class);
+        jaxrsServer.getDeployment().getActualResourceClasses().add(RequestController.class);
 
         // Start server
         jaxrsServer.start();
-        System.out.println("server started");
+        logger.info("Server started at https://127.0.0.1:{}", Config.getInstance().getPort());
     }
 
     /**
-     * Create an HTTPS server.
+     * Create an HTTPS server with the key found at keyPath and port number.
      * Adapted from http://stackoverflow.com/a/34483734/1559886.
      *
      * @param keyPath Path to the key file.
      * @param port    Port on which to start the web server.
-     * @return
+     * @return HTTPS server
      * @throws NoSuchAlgorithmException
      * @throws IOException
      * @throws KeyStoreException
@@ -84,8 +87,7 @@ public class Main {
                     SSLParameters defaultSSLParameters = sslContext.getDefaultSSLParameters();
                     httpsParameters.setSSLParameters(defaultSSLParameters);
                 } catch (Exception e) {
-                    System.out.println("Failed to create HTTPS port");
-                    e.printStackTrace();
+                    logger.error("Failed to configure the HTTPS parameters for an incoming connection: {}", e);
                 }
             }
         });

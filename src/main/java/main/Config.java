@@ -1,6 +1,11 @@
 package main;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jknack.handlebars.Handlebars;
+import com.github.jknack.handlebars.io.FileTemplateLoader;
+import com.github.jknack.handlebars.io.TemplateLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,22 +19,26 @@ import java.nio.file.Paths;
  * See http://stackoverflow.com/a/96436 for some justification.
  */
 public class Config {
-    private static final Config INSTANCE = new Config();
+    private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
+    private static final Config INSTANCE = new Config();
+    private static final String handlebarsFileExtension = ".hbs";
+    private static final String handlebarsDirectoryPath = "/";
     private final String resourcePath = "src/main/resources";
+
     private String clientId;
-    private String host;
+    private String redirectUri;
     private int port;
-    private String loginPath;
+
+    private Handlebars handlebars;
 
     /**
      * config.json parses into this class.
      */
     private static class JsonConfig {
         public String clientId;
-        public String host;
+        public String redirectUri;
         public int port;
-        public String loginPath;
     }
 
     /**
@@ -37,21 +46,20 @@ public class Config {
      */
     private Config() {
         if (!Files.exists(Paths.get(resourcePath))) {
-            System.err.println("Could not find path to resources.");
-            System.err.println("Run JAR file from swa-sample-seller directory.");
+            logger.error("Could not find path to resources. Run JAR file from repo root.");
             System.exit(1);
         }
         try {
             JsonConfig jsonConfig;
             jsonConfig = new ObjectMapper().readValue(new File(getResourcePath("/config.json")), JsonConfig.class);
             this.clientId = jsonConfig.clientId;
-            this.host = jsonConfig.host;
+            this.redirectUri = jsonConfig.redirectUri;
             this.port = jsonConfig.port;
-            this.loginPath = jsonConfig.loginPath;
         } catch (IOException e) {
-            System.err.println("failed to read config.json");
-            e.printStackTrace();
+            logger.error("Failed to read config.json: {}", e);
         }
+        TemplateLoader loader = new FileTemplateLoader(getResourcePath(handlebarsDirectoryPath), handlebarsFileExtension);
+        this.handlebars = new Handlebars(loader);
     }
 
     /**
@@ -79,16 +87,15 @@ public class Config {
         return clientId;
     }
 
-    public String getHost() {
-        return host;
+    public String getRedirectUri() {
+        return redirectUri;
     }
 
     public int getPort() {
         return port;
     }
 
-    public String getLoginPath() {
-        return loginPath;
+    public Handlebars getHandlebars() {
+        return handlebars;
     }
 }
-

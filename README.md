@@ -1,27 +1,31 @@
-# SWA Sample Seller
+# WARNING
+
+* Deploy this application only to your local machine.
+* Anyone who visits this web application may have access to confidential data about your seller account and customer accounts.
+* This application is meant for testing/demonstration purposes only.
+
+# Subscribe with Amazon (SWA) Sample Seller
+
+Install JDK 8 from Oracle or OpenJDK:
+
+* Oracle: http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+* OpenJDK: http://openjdk.java.net/
+
+Install the Maven build system from https://maven.apache.org/.
 
 Build the JAR file:
 
-```
-cd SWASampleSeller
-mvn package
-```
-
-Edit configuration:
-
-```
-vi src/main/resources/config.json
+```bash
+cd path/to/repo  # Switch to the repo root directory.
+mvn package      # Build the program with Maven.
 ```
 
-Run the web server:
+Edit the configuration at `src/main/resources/config.json`.
 
+Run the JAR file to start the web application:
+
+```bash
+java -jar target/SWASampleSeller-1.0-SNAPSHOT.jar   # Run the JAR file.
 ```
-java -jar target/SWASampleSeller-1.0-SNAPSHOT.jar
-```
 
-# Warnings
-
-This application is meant for testing/demonstration purposes only.
-
-* Don't deploy this to production.
-* Don't use `src/main/resources/key.jks`. Purchase your own SSL certificate.
+Visit the application at `https://127.0.0.1:YOUR_PORT_NUMBER`.
