@@ -22,6 +22,12 @@ mvn package      # Build the program with Maven.
 
 Edit the configuration at `src/main/resources/config.json`.
 
+Sign into the App Console at http://login.amazon.com/manageApps.
+
+* Select the LWA application associated with your SWA subscription.
+* Expand the "Web Settings" tab.
+* Add `https://127.0.0.1:YOUR_PORT_NUMBER` to "Allowed JavaScript Origins" and "Allowed Return URLs".
+
 Run the JAR file to start the web application:
 
 ```bash
