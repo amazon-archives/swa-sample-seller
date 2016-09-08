@@ -1,0 +1,26 @@
+<table border="1" style="border:1px solid black">
+    <tr>
+        <td>Method</td>
+        <td>{{request.method}}</td>
+    </tr>
+
+    <tr>
+        <td>Target</td>
+        <td>{{request.target}}</td>
+    </tr>
+
+    <tr>
+        <td>Query parameters</td>
+        <td>{{> helpers/mapTable request.queryParameters}}</td>
+    </tr>
+
+    <tr>
+        <td>Headers</td>
+        <td>{{> helpers/mapTable request.headers}}</td>
+    </tr>
+
+    <tr>
+        <td>Body</td>
+        <td style="white-space: pre">{{request.body}}</td>
+    </tr>
+</table>

@@ -1,0 +1,9 @@
+<script type="text/javascript">
+  document.getElementById('LoginWithAmazon').onclick = function() {
+    // Scope may be any combination of profile, profile:user_id, postal_code.
+    // See https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/customer_profile.html.
+    var options = { scope : ['postal_code', 'profile'] };
+    amazon.Login.authorize(options, '{{redirectUri}}');
+    return false;
+  };
+</script>

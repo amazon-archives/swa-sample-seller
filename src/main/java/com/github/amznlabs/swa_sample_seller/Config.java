@@ -22,14 +22,11 @@ public class Config {
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
 
     private static final Config INSTANCE = new Config();
-    private static final String handlebarsFileExtension = ".hbs";
-    private static final String handlebarsDirectoryPath = "/";
-    private final String resourcePath = "src/main/resources";
+    private static final String HANDLEBARS_FILE_EXTENSION = ".hbs";
+    private static final String HANDLEBARS_DIRECTORY_PATH = "/views";
+    private static final String RESOURCE_PATH = "src/main/resources";
 
-    private String clientId;
-    private String redirectUri;
-    private int port;
-
+    private JsonConfig jsonConfig;
     private Handlebars handlebars;
 
     /**
@@ -37,7 +34,9 @@ public class Config {
      */
     private static class JsonConfig {
         public String clientId;
+        public String clientSecret;
         public String redirectUri;
+        public String logoutRedirectUrl;
         public int port;
     }
 
@@ -45,20 +44,16 @@ public class Config {
      * Private constructor to prevent other code from instantiating this.
      */
     private Config() {
-        if (!Files.exists(Paths.get(resourcePath))) {
+        if (!Files.exists(Paths.get(RESOURCE_PATH))) {
             logger.error("Could not find path to resources. Run JAR file from repo root.");
             System.exit(1);
         }
         try {
-            JsonConfig jsonConfig;
             jsonConfig = new ObjectMapper().readValue(new File(getResourcePath("/config.json")), JsonConfig.class);
-            this.clientId = jsonConfig.clientId;
-            this.redirectUri = jsonConfig.redirectUri;
-            this.port = jsonConfig.port;
         } catch (IOException e) {
             logger.error("Failed to read config.json: {}", e);
         }
-        TemplateLoader loader = new FileTemplateLoader(getResourcePath(handlebarsDirectoryPath), handlebarsFileExtension);
+        TemplateLoader loader = new FileTemplateLoader(getResourcePath(HANDLEBARS_DIRECTORY_PATH), HANDLEBARS_FILE_EXTENSION);
         this.handlebars = new Handlebars(loader);
     }
 
@@ -72,27 +67,35 @@ public class Config {
     /**
      * Gets the correct path of this resource.
      * <p>
-     * For example, if "view/landing.html" was a file in the resources folder,
-     * then this application should call config.getResourcePath("/view/landing.html")
+     * For example, if "apiDumpViewModel.html" was a file in the resources folder,
+     * then this application should call config.getResourcePath("/apiDumpViewModellanding.html")
      * to access it.
      *
      * @param path Absolute path.
      * @return Path that this application can use.
      */
     public String getResourcePath(String path) {
-        return resourcePath + path;
+        return RESOURCE_PATH + path;
     }
 
     public String getClientId() {
-        return clientId;
+        return jsonConfig.clientId;
+    }
+
+    public String getClientSecret() {
+        return jsonConfig.clientSecret;
     }
 
     public String getRedirectUri() {
-        return redirectUri;
+        return jsonConfig.redirectUri;
+    }
+
+    public String getLogoutRedirectUrl() {
+        return jsonConfig.logoutRedirectUrl;
     }
 
     public int getPort() {
-        return port;
+        return jsonConfig.port;
     }
 
     public Handlebars getHandlebars() {

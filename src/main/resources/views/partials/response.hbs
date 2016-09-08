@@ -1,0 +1,16 @@
+<table border="1">
+    <tr>
+        <td>Status</td>
+        <td>{{response.status}}</td>
+    </tr>
+
+    <tr>
+        <td>Headers</td>
+        <td>{{> helpers/mapTable response.headers}}</td>
+    </tr>
+
+    <tr>
+        <td>Body</td>
+        <td style="white-space: pre">{{response.body}}</td>
+    </tr>
+</table>

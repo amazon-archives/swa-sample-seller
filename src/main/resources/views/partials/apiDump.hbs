@@ -1,0 +1,67 @@
+<p>
+    <b>Customer Profile Request</b>
+    <br />
+    {{> partials/request request=apiDump.customerProfileRequest}}
+</p>
+
+{{#if apiDump.customerProfileRequestSucceeded}}
+    <p>
+        <b>Customer Profile Response</b>
+        <br/>
+        {{> partials/response response=apiDump.customerProfileResponse}}
+    </p>
+
+    <p>
+        <b>Seller Access Token Request</b>
+        <br/>
+        {{> partials/request request=apiDump.sellerAccessTokenRequest}}
+    </p>
+
+    {{#if apiDump.sellerAccessTokenRequestSucceeded}}
+
+        <p>
+            <b>Seller Access Token Response</b>
+            {{> partials/response response=apiDump.sellerAccessTokenResponse}}
+        </p>
+
+        <p>
+            <b>Subscriptions Request</b>
+            <br/>
+            {{> partials/request request=apiDump.subscriptionsRequest}}
+        </p>
+
+        {{#if apiDump.subscriptionsRequestSucceeded}}
+
+            <p>
+                <b>Subscriptions Response</b>
+                <br/>
+                {{> partials/response response=apiDump.subscriptionsResponse}}
+            </p>
+
+        {{else}}
+
+            <p>
+                <b style="color:red;">Subscriptions Request FAILED</b>
+                <br/>
+                {{> partials/response response=apiDump.subscriptionsResponse}}
+            </p>
+
+        {{/if}}
+    {{else}}
+
+        <p>
+            <b style="color:red;">Seller Access Token Request FAILED</b>
+            <br/>
+            {{> partials/response response=apiDump.sellerAccessTokenResponse}}
+        </p>
+
+    {{/if}}
+{{else}}
+
+    <p>
+        <b style="color:red;">Customer Profile Request Request FAILED</b>
+        <br/>
+        {{> partials/response response=apiDump.customerProfileResponse}}
+    </p>
+
+{{/if}}

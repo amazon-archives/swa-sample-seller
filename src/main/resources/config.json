@@ -1,5 +1,7 @@
 {
   "clientId" : "YOUR_CLIENT_ID",
+  "clientSecret" : "YOUR_CLIENT_SECRET",
+  "port": "YOUR_PORT",
   "redirectUri": "YOUR_REDIRECT_URI",
-  "port": "8443"
+  "logoutRedirectUrl" : "YOUR_LOGOUT_REDIRECT_URL"
 }

@@ -1,0 +1,30 @@
+{{> partials/header}}
+{{> partials/lwaSdkInit clientId=config.getClientId}}
+
+<p><a href="{{config.getLogoutRedirectUrl}}" id="Logout">Logout</a></p>
+<script type="text/javascript">
+  document.getElementById('Logout').onclick = function() {
+    amazon.Login.logout();
+};
+
+</script>
+
+{{#if apiCallsSucceeded}}
+    {{#if hasSubscription}}
+        <p>You have a subscription :)</p>
+    {{else}}
+        <p>You don't have a subscription :(</p>
+    {{/if}}
+{{else}}
+    <p>An API call has failed. See the API logs below.</p>
+{{/if}}
+
+<hr/>
+
+<div>
+    <p>Developer Info <span style="color: red; font-weight: bold;">(should be hidden from customers)</span></p>
+
+    {{> partials/apiDump apiDump=apiDump}}
+</div>
+
+{{> partials/footer}}
