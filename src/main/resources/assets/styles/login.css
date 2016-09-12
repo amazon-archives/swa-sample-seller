@@ -1,0 +1,89 @@
+body {
+    font-family: Arial;
+    background-color: #2d3468;
+}
+
+.arial {
+    font-family: Arial;
+}
+
+.center-block {
+    margin: 0 auto;
+    display: block;
+}
+
+#login-box {
+    width: 460px;
+    height: 660px;
+    background: rgba(255, 255, 255, 0.4);
+    /* offset-x | offset-y | blur-radius | spread-radius | color */
+    box-shadow: 0px 0px 10px 3px rgba(85, 85, 85, 0.7);
+    text-align: center;
+}
+
+.input-field-div {
+    width: 245px;
+    height: 50px;
+    position: relative;
+}
+
+.input-field-div .input-text {
+    width: 207px;
+    position: absolute;
+    top: 17px;
+    left: 18px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #131734;
+    z-index: 2;
+    border: none;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.input-field-div .input-background {
+    position: absolute;
+    z-index: 1;
+}
+
+#OR-div {
+    text-align: center;
+    white-space: nowrap;
+    line-height: 10px;
+    overflow: hidden;
+}
+
+#OR-div .child {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.divider {
+    display: block;
+    width: 95px;
+    height: 2px;
+    margin: 0px 10px 0px 10px;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+#sign-in-div {
+    width: 239px;
+    height: 44px;
+}
+
+.extra-large {
+    width: 1px;
+    height: 26px;
+    display: block;
+}
+
+.base {
+    width: 1px;
+    height: 14px;
+    display: block;
+}
+
+.large {
+    width: 1px;
+    height: 22px;
+    display: block;
+}

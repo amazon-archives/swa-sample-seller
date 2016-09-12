@@ -1,8 +1,7 @@
 package com.github.amznlabs.swa_sample_seller.models;
 
 public class SellerAccessTokenRequestJson {
-
-    // These need to be non-static so they parse into JSON properly
+    // These need to be non-static so they parse into JSON properly.
     public final String grant_type = "client_credentials";
     public final String scope = "swa:subscriptions";
 

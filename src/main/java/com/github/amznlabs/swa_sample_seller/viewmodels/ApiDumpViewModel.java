@@ -1,6 +1,5 @@
 package com.github.amznlabs.swa_sample_seller.viewmodels;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data

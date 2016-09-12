@@ -1,30 +1,146 @@
-{{> partials/header}}
+{{> partials/headerStart}}
+<link rel="stylesheet" href="assets/styles/subscriptions.css"/>
+<!-- Latest compiled and minified CSS -->
+{{> partials/bootstrap_css}}
+{{> partials/headerEnd}}
 {{> partials/lwaSdkInit clientId=config.getClientId}}
 
-<p><a href="{{config.getLogoutRedirectUrl}}" id="Logout">Logout</a></p>
-<script type="text/javascript">
-  document.getElementById('Logout').onclick = function() {
-    amazon.Login.logout();
-};
-
-</script>
-
-{{#if apiCallsSucceeded}}
-    {{#if hasSubscription}}
-        <p>You have a subscription :)</p>
-    {{else}}
-        <p>You don't have a subscription :(</p>
-    {{/if}}
-{{else}}
-    <p>An API call has failed. See the API logs below.</p>
-{{/if}}
-
-<hr/>
-
-<div>
-    <p>Developer Info <span style="color: red; font-weight: bold;">(should be hidden from customers)</span></p>
-
-    {{> partials/apiDump apiDump=apiDump}}
+<div id="center-container">
+<div id="menu">
+    <div id="menu-left">
+        <div class="space-32"></div>
+        <div id="swanly-logo">
+            <span></span>
+            <img src="assets/images/swanly_logo_subscriptions_page.png"/>
+        </div>
+        <div class="space-45"></div>
+        <div id="now-playing">
+            <div id="now-playing-inner">NOW PLAYING</div>
+        </div>
+    </div>
+    <div id="menu-left">
+        <div class="space-32"></div>
+        <div id="swanly-logo">
+            <span></span>
+            <img src="assets/images/swanly_logo_subscriptions_page.png"/>
+        </div>
+        <div class="space-45"></div>
+        <div id="now-playing">
+            <div id="now-playing-inner">NOW PLAYING</div>
+        </div>
+    </div>
+    <div id="menu-right">
+        <div id="username" class="dropdown">
+            <div class="dropdown-toggle menu-link-text" type="button" data-toggle="dropdown">
+                Hi {{name}}! <span class="caret"></span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-left menu-link-text">
+                <li><a id="Logout" class="menu-link-text" href="{{config.getLogoutRedirectUrl}}">Logout</a></li>
+            </ul>
+        </div>
+        <div id="settings" class="dropdown">
+            <div class="dropdown-toggle menu-link-text" type="button" data-toggle="dropdown">
+                Settings <span class="caret"></span>
+            </div>
+            <ul class="dropdown-menu dropdown-menu-right">
+                <li><a href="https://www.amazon.com/subscriptionmanager/digital-subscriptions/" class="menu-link-text" target="_blank">Manage subscriptions</a></li>
+            </ul>
+        </div>
+    </div>
 </div>
+
+
+{{#* inline "song-entry"}}
+    <div class="song-entry">
+        <div class="top-divider"></div>
+        <div class="song-entry-content">
+            <img class="heart-icon" src="assets/images/heart_icon.png"/>
+            <div class="song-title">{{title}}</div>
+            <div class="vertical-divider"></div>
+            <div class="song-length">{{length}}</div>
+            <div class="vertical-divider"></div>
+            {{#if hasSubscription}}
+                <div class="play">
+                    <img class="play-icon-center" src="assets/images/play_icon.png"/>
+                </div>
+            {{else}}
+                <div class="play">
+                    <div class="play-sample">play sample</div>
+                    <img class="play-icon-sample" src="assets/images/play_icon.png"/>
+                </div>
+            {{/if}}
+        </div>
+    </div>
+{{/inline}}
+
+<div id="subscription-box">
+    <div id="background">
+        <div id="album-title">The Swan in the Storm</div>
+        <div id="composer">Yannis Van Tommel</div>
+        <div id="subscription-message">
+            {{#if apiCallsSucceeded}}
+                {{#if hasSubscription}}
+                    Enjoy your subscription!
+                {{else}}
+                    Please purchase a subscription
+                {{/if}}
+            {{else}}
+                API call failed. See the API logs below.
+            {{/if}}
+        </div>
+    </div>
+    <div id="playlist">
+        <div id="subscription-text">
+            <div id="song-header">
+                Tommel: The Swan in the Storm
+            </div>
+            <div id="song-performed-by">
+                Performed by: Kalaeindei Symphony Orchestra
+            </div>
+            {{> song-entry title="Prelude" length="4:29"}}
+            {{> song-entry title="I: The Storm" length="14:35" hasSubscription=hasSubscription}}
+            {{> song-entry title="II: The Swan" length="10:42" hasSubscription=hasSubscription}}
+            {{> song-entry title="III: The Ship" length="7:03" hasSubscription=hasSubscription}}
+            {{#if hasSubscription}}
+                {{> song-entry title="Interlude" length="1:28" hasSubscription=hasSubscription}}
+            {{else}}
+                <div class="extra-large"></div>
+                <a id="subscribe-button" class="center-block" href="{{config.getDetailPageUrl}}" target="_blank">
+                    <img id="subscribe-button-img" class="center-block"
+                         src="assets/images/subscribe_button_regular.png"/>
+                </a>
+            {{/if}}
+
+        </div>
+    </div>
+</div>
+
+<div class="double-large"></div>
+
+<div style="margin-left: 30px;">
+
+    <div class="swanly-dropdown">
+        <div class="swanly-dropdown-inner">
+            <div class="swanly-dropdown-title">Information for developers <span style="color: red; font-weight: bold;">(should be hidden from customers)</span>
+            </div>
+            <img id="dev-info-arrow" class="swanly-dropdown-arrow" src="assets/images/arrow.png"/>
+            <div class="swanly-dropdown-divider"></div>
+            <div class="swanly-dropdown-content" id="dev-info-content">
+                {{> partials/apiDump apiDump=apiDump}}
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById('Logout').onclick = function() {
+        amazon.Login.logout();
+    };
+</script>
+{{> partials/jquery}}
+{{> partials/bootstrap_js}}
+<script src="assets/js/subscriptions.js"></script>
 
 {{> partials/footer}}

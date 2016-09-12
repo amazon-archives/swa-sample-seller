@@ -1,18 +1,53 @@
-{{> partials/header}}
+{{> partials/headerStart}}
+<link rel="stylesheet" href="assets/styles/login.css" />
+{{> partials/headerEnd}}
 
-<!-- This div and script must go after the opening <body> tag. -->
-<!-- See http://login.amazon.com/website. -->
 {{> partials/lwaSdkInit clientId=config.getClientId}}
 
-<!-- The LWA button. -->
-<a href="#" id="LoginWithAmazon">
-    <img border="0" alt="Login with Amazon"
-         src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png"
-         width="156" height="32"/>
-</a>
+<div class="extra-large"></div>
+<div class="extra-large"></div>
+<div id="login-box" class="center-block">
+    <div class="extra-large"></div>
+    <img class="center-block" src="assets/images/login_logo.png" />
+    <div class="extra-large"></div>
+    <div class="input-field-div center-block">
+        <input class="input-text arial" type="text" placeholder="Your Email" />
+        <img class="input-background center-block" src="assets/images/input_field.png" />
+    </div>
+    <div class="base"></div>
+    <div class="input-field-div center-block">
+        <input class="input-text arial" type="password" placeholder="Your Password" />
+        <img class="input-background center-block" src="assets/images/input_field.png" />
+    </div>
+    <div class="large"></div>
+    <a id="sign-in-div" class="center-block" href="#">
+        <img id="sign-in-img" class="center-block" src="assets/images/sign_in_regular.png" />
+    </a>
+    <div class="extra-large"></div>
+    <div id="OR-div">
+        <div class="child">
+            <div class="divider"></div>
+        </div>
+        <div class="child" style="font-size: 13px; font-weight: bold; color: rgba(255, 255, 255, 0.5);">OR</div>
+        <div class="child">
+            <div class="divider"></div>
+        </div>
+    </div>
+    <div class="base"></div>
+    <a href="#" id="LoginWithAmazon">
+        <img class="center-block" border="0" alt="Login with Amazon" src="https://images-na.ssl-images-amazon.com/images/G/01/lwa/btnLWA_gold_156x32.png" width="156" height="32" />
+    </a>
+    <div class="base"></div>
+    <div class="center-block" style="font-size: 13px; color: #ffffff;">
+        By signing in, you agree to our Terms
+        <br/>of Use and Privacy Policy.
+    </div>
+</div>
 
-<!-- This must go after the LWA button. -->
-<!-- See http://login.amazon.com/website. -->
 {{> partials/lwaLogin redirectUri=config.getRedirectUri}}
 
+{{> partials/jquery}}
+<script src="assets/js/login.js"></script>
+
 {{> partials/footer}}
+

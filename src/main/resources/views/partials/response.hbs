@@ -1,4 +1,4 @@
-<table border="1">
+<table class="response-table" border="1">
     <tr>
         <td>Status</td>
         <td>{{response.status}}</td>
@@ -6,11 +6,11 @@
 
     <tr>
         <td>Headers</td>
-        <td>{{> helpers/mapTable response.headers}}</td>
+        <td>{{> helpers/map2Table response.headers}}</td>
     </tr>
 
     <tr>
         <td>Body</td>
-        <td style="white-space: pre">{{response.body}}</td>
+        <td style="white-space: pre-wrap">{{response.body}}</td>
     </tr>
 </table>

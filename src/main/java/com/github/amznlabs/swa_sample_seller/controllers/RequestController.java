@@ -21,6 +21,7 @@ import java.util.Optional;
 /**
  * Routes user requests to response handlers.
  */
+@lombok.Data
 @Path("/")
 public class RequestController {
     private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
@@ -55,12 +56,15 @@ public class RequestController {
         ApiDumpViewModel apiDumpViewModel = new ApiDumpViewModel();
         boolean apiCallsSucceeded = false;
         boolean hasSubscription = false;
+        String name = "NAME NOT FOUND";
 
         // customer access token -> customer profile.
         Optional<CustomerProfileResponseJson> customerProfileResponseJson =
                 getCustomerProfile(customerAccessToken, apiDumpViewModel);
 
         if (customerProfileResponseJson.isPresent()) {
+            name = customerProfileResponseJson.get().name;
+
             // Use seller's clientId and clientSecret to retrieve seller's access_token.
             Optional<SellerAccessTokenResponseJson> sellerAccessTokenResponseJson =
                     getSellerAccessToken(Config.getInstance().getClientId(), Config.getInstance().getClientSecret(), apiDumpViewModel);
@@ -87,6 +91,7 @@ public class RequestController {
                         .combine("apiCallsSucceeded", apiCallsSucceeded)
                         .combine("hasSubscription", hasSubscription)
                         .combine("apiDump", apiDumpViewModel)
+                        .combine("name", name)
                         .build());
     }
 

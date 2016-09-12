@@ -1,67 +1,49 @@
-<p>
-    <b>Customer Profile Request</b>
-    <br />
-    {{> partials/request request=apiDump.customerProfileRequest}}
-</p>
+<b>Customer Profile Request</b>
+{{> partials/request request=apiDump.customerProfileRequest}}
 
 {{#if apiDump.customerProfileRequestSucceeded}}
-    <p>
-        <b>Customer Profile Response</b>
-        <br/>
-        {{> partials/response response=apiDump.customerProfileResponse}}
-    </p>
+    <br/>
+    <b>Customer Profile Response</b>
+    {{> partials/response response=apiDump.customerProfileResponse}}
 
-    <p>
-        <b>Seller Access Token Request</b>
-        <br/>
-        {{> partials/request request=apiDump.sellerAccessTokenRequest}}
-    </p>
+    <br/>
+    <b>Seller Access Token Request</b>
+    {{> partials/request request=apiDump.sellerAccessTokenRequest}}
 
     {{#if apiDump.sellerAccessTokenRequestSucceeded}}
 
-        <p>
-            <b>Seller Access Token Response</b>
-            {{> partials/response response=apiDump.sellerAccessTokenResponse}}
-        </p>
+        <br/>
+        <b>Seller Access Token Response</b>
+        {{> partials/response response=apiDump.sellerAccessTokenResponse}}
 
-        <p>
-            <b>Subscriptions Request</b>
-            <br/>
-            {{> partials/request request=apiDump.subscriptionsRequest}}
-        </p>
+        <br/>
+        <b>Subscriptions Request</b>
+        {{> partials/request request=apiDump.subscriptionsRequest}}
 
         {{#if apiDump.subscriptionsRequestSucceeded}}
 
-            <p>
-                <b>Subscriptions Response</b>
-                <br/>
-                {{> partials/response response=apiDump.subscriptionsResponse}}
-            </p>
+            <br/>
+            <b>Subscriptions Response</b>
+            {{> partials/response response=apiDump.subscriptionsResponse}}
 
         {{else}}
 
-            <p>
-                <b style="color:red;">Subscriptions Request FAILED</b>
-                <br/>
-                {{> partials/response response=apiDump.subscriptionsResponse}}
-            </p>
+            <br/>
+            <b style="color:red;">Subscriptions Request FAILED</b>
+            {{> partials/response response=apiDump.subscriptionsResponse}}
 
         {{/if}}
     {{else}}
 
-        <p>
-            <b style="color:red;">Seller Access Token Request FAILED</b>
-            <br/>
-            {{> partials/response response=apiDump.sellerAccessTokenResponse}}
-        </p>
+        <br/>
+        <b style="color:red;">Seller Access Token Request FAILED</b>
+        {{> partials/response response=apiDump.sellerAccessTokenResponse}}
 
     {{/if}}
 {{else}}
 
-    <p>
-        <b style="color:red;">Customer Profile Request Request FAILED</b>
-        <br/>
-        {{> partials/response response=apiDump.customerProfileResponse}}
-    </p>
+    <br/>
+    <b style="color:red;">Customer Profile Request Request FAILED</b>
+    {{> partials/response response=apiDump.customerProfileResponse}}
 
 {{/if}}

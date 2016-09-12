@@ -1,6 +1,7 @@
 package com.github.amznlabs.swa_sample_seller;
 
 import com.github.amznlabs.swa_sample_seller.controllers.RequestController;
+import com.github.amznlabs.swa_sample_seller.controllers.AssetsController;
 import com.sun.net.httpserver.HttpServer;
 import com.sun.net.httpserver.HttpsConfigurator;
 import com.sun.net.httpserver.HttpsParameters;
@@ -30,6 +31,7 @@ public class Main {
 
         // Add resource classes
         jaxrsServer.getDeployment().getActualResourceClasses().add(RequestController.class);
+        jaxrsServer.getDeployment().getActualResourceClasses().add(AssetsController.class);
 
         // Start server
         jaxrsServer.start();

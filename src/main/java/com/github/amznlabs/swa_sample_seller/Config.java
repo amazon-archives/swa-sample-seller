@@ -35,6 +35,7 @@ public class Config {
     private static class JsonConfig {
         public String clientId;
         public String clientSecret;
+        public String detailPageUrl;
         public String redirectUri;
         public String logoutRedirectUrl;
         public int port;
@@ -85,6 +86,8 @@ public class Config {
     public String getClientSecret() {
         return jsonConfig.clientSecret;
     }
+
+    public String getDetailPageUrl() { return jsonConfig.detailPageUrl; }
 
     public String getRedirectUri() {
         return jsonConfig.redirectUri;

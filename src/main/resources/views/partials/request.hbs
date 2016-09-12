@@ -1,4 +1,4 @@
-<table border="1" style="border:1px solid black">
+<table class="request-table" border="1">
     <tr>
         <td>Method</td>
         <td>{{request.method}}</td>
@@ -11,16 +11,16 @@
 
     <tr>
         <td>Query parameters</td>
-        <td>{{> helpers/mapTable request.queryParameters}}</td>
+        <td>{{> helpers/map2Table request.queryParameters}}</td>
     </tr>
 
     <tr>
         <td>Headers</td>
-        <td>{{> helpers/mapTable request.headers}}</td>
+        <td>{{> helpers/map2Table request.headers}}</td>
     </tr>
 
     <tr>
         <td>Body</td>
-        <td style="white-space: pre">{{request.body}}</td>
+        <td style="white-space: pre-wrap">{{request.body}}</td>
     </tr>
 </table>

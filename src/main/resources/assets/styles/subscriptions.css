@@ -1,0 +1,323 @@
+html {
+    height: 100%;
+}
+
+body {
+    background-color: #E3F3F4;
+    font-family: Arial;
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+.extra-large {
+    width: 1px;
+    height: 26px;
+}
+
+.double-large {
+    width: 1px;
+    height: 26px;
+}
+
+.space-32 {
+    width: 32px;
+    height: 1px;
+}
+
+.space-35 {
+    width: 35px;
+    height: 1px;
+}
+
+.space-45 {
+    width: 45px;
+    height: 1px;
+}
+
+#center-container {
+    margin: 0 auto;
+    width: 1280px;
+    background-color: #ffffff;
+    min-height: 100%;
+    height: 100%;
+    box-shadow: 0px 0px 4px 0px rgba(100, 100, 100, 0.2);
+}
+
+#menu {
+    height: 60px;
+    display: block;
+    position: relative;
+}
+
+#menu-left {
+    position: absolute;
+    left: 0px;
+}
+
+#menu-left * {
+    float: left;
+}
+#menu-left * * {
+    float: none;
+}
+
+#menu-right {
+    margin-top: 25px;
+    position: absolute;
+    right: 0px;
+}
+
+
+#settings {
+    position: absolute;
+    right: 30px;
+}
+
+#username {
+    position: absolute;
+    right: 110px;
+}
+
+.menu-link-text {
+    white-space: nowrap;
+    font-size: 13px;
+    color: #0066c0;
+    cursor: pointer;
+}
+
+#swanly-logo {
+    width: 81px;
+    height: 60px;
+    white-space: nowrap;
+}
+#swanly-logo span {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+#swanly-logo img {
+    vertical-align: middle;
+    max-width: 81px;
+    min-height: 37px;
+}
+
+#now-playing {
+    position: relative;
+    width: 150px;
+    height: 60px;
+}
+
+#now-playing-inner {
+    font-weight: bold;
+    font-size: 13px;
+    color: #ffffff;
+    background-color: #00c8ca;
+    text-align: center;
+    line-height: 50px;
+    position: absolute;
+    width: 150px;
+    height: 50px;
+    bottom: 0px;
+}
+
+.center-block {
+    margin: 0 auto;
+    display: block;
+}
+
+.block {
+    display: block;
+}
+
+#subscription-box {
+    width: 1280px;
+    height: 400px;
+}
+
+#subscription-text {
+    padding-left: 30px;
+}
+
+#background {
+    float: left;
+    width: 750px;
+    height: 400px;
+    position: relative;
+    color: #ffffff;
+    background-color: #007c7e;
+}
+
+#album-title {
+    font-weight: bold;
+    font-size: 60px;
+    position: absolute;
+    top: 26px;
+    right: 25px;
+}
+
+#composer {
+    font-weight: bold;
+    font-size: 30px;
+    position: absolute;
+    top: 105px;
+    right: 25px;
+}
+
+
+#subscription-message {
+    vertical-align: middle;
+    width: 100%;
+    font-size: 36px;
+    line-height: 90px;
+    position: absolute;
+    bottom: 36px;
+    height: 90px;
+    background-color: rgba(26, 8, 2, 0.45);
+    opacity: 45;
+    text-align: center;
+}
+
+
+#playlist {
+    float: right;
+    width: 530px;
+    height: 400px;
+    background-color: #1f1f1f;
+    color: #ffffff;
+}
+
+#song-header {
+    margin-top: 14px;
+    font-weight: bold;
+    font-size: 28px;
+}
+
+#song-performed-by {
+    font-weight: bold;
+    font-size: 13px;
+    margin-bottom: 14px;
+}
+
+.song-entry {
+    display: block;
+    position: relative;
+    height: 56px;
+}
+
+.song-entry-content {
+    position: absolute;
+    height: 55px;
+    top: 0;
+    display: flex;
+    align-items: center;
+}
+
+.top-divider {
+    width: 465px;
+    height: 1px;
+    border-top: 1px solid #dddddd;
+    display: block;
+}
+
+.vertical-divider {
+    width: 1px;
+    height: 35px;
+    background-color: #dddddd;
+}
+
+.heart-icon {
+    margin-right: 8px;
+}
+
+.song-title {
+    font-weight: bold;
+    font-size: 13px;
+    width: 219px;
+}
+
+.song-length {
+    font-size: 13px;
+    width: 100px;
+    text-align: center;
+}
+
+.play {
+    cursor: pointer;
+    position: relative;
+        width: 120px;
+}
+
+.play-icon-center {
+    margin: 0 auto;
+    display: block;
+}
+
+.play-sample {
+    font-size: 13px;
+    text-align: center;
+    display: inline;
+    position: absolute;
+    margin-top: 2px;
+    left: 23px;
+}
+
+.play-icon-sample {
+    margin-left: 110px;
+}
+
+#subscribe-button {
+    width: 239px;
+    height: 44px;
+}
+
+
+.swanly-dropdown {
+    width: 1220px;
+    box-shadow: 0px 0px 7px 0px rgba(0, 0, 0, 0.4);
+    position: relative;
+}
+
+.swanly-dropdown-inner {
+    margin-left:20px;
+}
+
+.swanly-dropdown-title {
+    line-height: 55px;
+    font-size: 21px;
+}
+
+.swanly-dropdown-arrow {
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    padding: 10px;
+}
+
+.swanly-dropdown-divider {
+    border-top: 1px solid #dddddd;
+    width: 1190px;
+    position: absolute;
+    left: 20px;
+}
+
+.swanly-dropdown-content {
+    max-width: 1190px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    display: none;
+}
+
+#dev-info-arrow {
+    cursor: pointer;
+}
+
+
+.request-table, .response-table, .map-2-table {
+    table-layout:fixed;
+    width: 100%;
+}
+
+.request-table td, .response-table td, .map-2-table td {
+    word-wrap:break-word;
+}

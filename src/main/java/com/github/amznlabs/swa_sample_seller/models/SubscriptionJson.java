@@ -4,9 +4,9 @@ import java.util.List;
 
 public class SubscriptionJson {
     public List<BeneficiaryJson> beneficiaries;
-    public Integer endDate;
+    public Long endDate;
     public String productId;
     public String receiptId;
-    public Integer startDate;
+    public Long startDate;
     public String status;
 }
