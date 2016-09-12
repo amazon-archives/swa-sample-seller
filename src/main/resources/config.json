@@ -3,5 +3,9 @@
   "clientSecret" : "YOUR_CLIENT_SECRET",
   "port": "YOUR_PORT",
   "redirectUri": "YOUR_REDIRECT_URI",
-  "logoutRedirectUrl" : "YOUR_LOGOUT_REDIRECT_URL"
+  "logoutRedirectUrl" : "YOUR_LOGOUT_REDIRECT_URL",
+  "awsResourcesName": "swa_sample_seller",
+  "awsAccessKeyId": "YOUR_AWS_ACCESS_KEY_ID",
+  "awsSecretAccessKey": "YOUR_AWS_SECRET_ACCESS_KEY",
+  "awsRegionName": "us-west-2"
 }

@@ -1,8 +1,7 @@
-# WARNING
+# _WARNING_
 
 * Deploy this application only to your local machine.
-* Anyone who visits this web application may have access to confidential data about your seller account and customer accounts.
-* This application is meant for testing/demonstration purposes only.
+* Anyone who visits this web application will have access to confidential data about your seller account and customer accounts.
 
 # Subscribe with Amazon (SWA) Sample Seller
 
@@ -73,3 +72,72 @@ java -jar target/swa_sample_seller-1.0-SNAPSHOT.jar   # Run the JAR file.
 7. View code for parsing an List Subscriptions API request **_[4.2.5]_**:
     * In `src/main/java/com/github/amznlabs/swa_sample_seller/controllers/RequestController.java`:
       * See `parseSubscriptionsResponse()`
+
+## Capture real push notifications
+
+Sample Push Notification Endpoint is a collection of services running on Amazon Web Services (AWS).
+
+### Setup Python and AWS
+
+* Install Python 2.7 from https://www.python.org/downloads/
+* Create an AWS account at https://aws.amazon.com/
+* Create an IAM user named `swa_sample_seller` with the `AdministratorAccess` permission.
+  * See http://docs.aws.amazon.com/lambda/latest/dg/setting-up.html
+  * **Make note of your access key ID and access key secret.**
+* Run `pip install boto3` to install the Python `boto3` library.
+
+### Edit `src/main/resources/config.json`
+
+1. Set`awsAccessKeyId` to your user's access key ID.
+2. Set `awsSecretAccessKey` to your user's secret access key.
+3. [Optional] Change `awsResourcesName` to `YOUR_AWS_RESOURCES_NAME`.
+    * All AWS resources will be created with this name.
+    * Use a name that will be easy to find in your AWS console.
+4. [Optional] Change `awsRegionName`.
+    * See http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+
+### Create Sample Push Notification Endpoint to catch push notifications
+
+1. Run `python src/main/python/aws_create.py`.
+2. Make note of the endpoint printed out by the script.
+    * Ex: `Your push notification endpoint is YOUR_ENDPOINT`.
+
+![Console output of running aws_create.py](aws_create.png)
+
+### Send a test notification
+
+1. Visit https://sellercentral.amazon.com/swa/dashboard.
+2. Edit the **Technical Profile** of your product.
+3. Continue to the **Push Notifications** page.
+4. Set the push notications endpoint field to `YOUR_ENDPOINT`.
+5. Click **Send Test Notification**.
+
+### View the test notification
+
+View the `YOUR_AWS_RESOURCES_NAME` table in your DynamoDB dashboard.
+
+### View a real push notification
+
+1. Purchase / Renew / Cancel your subscription.
+2. View the `YOUR_AWS_RESOURCES_NAME` table in your DynamoDB dashboard.
+
+### Delete the Sample Push Notification Endpoint
+
+Run `python src/main/python/aws_delete.py`.
+
+![Console output of running aws_delete.py](aws_delete.png)
+
+# FAQ
+
+* Is the AWS usage free?
+  * If you are eligible for AWS Free Tier, then most likely yes. All AWS usage should be within free tier limits.
+  * If you are not eligible for AWS Free Tier, then the expense will probably be minimal (less than $10).
+* Why can't Sample Seller receive real push notifications?
+  * Amazon only sends push notifications to a **publicly accessible IP** that serves a **trusted SSL certificate**.
+  * Sample Seller should not be deployed to a publicly accessible IP.
+  * Sample Seller uses a self-signed SSL certificate.
+* Why do I need to use AWS to receive push notifications?
+  * You do not need to use AWS.
+  * You can use any service that serves a publicly accessible IP with a trusted SSL certificate.
+* What SSL certificates are trusted by Amazon's push notification sender?
+  * See https://docs.aws.amazon.com/sns/latest/dg/SendMessageToHttp.https.ca.html.
