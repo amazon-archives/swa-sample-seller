@@ -6,29 +6,51 @@ import sys
 import aws_setup_utils
 
 def main():
+    """
+    This script sets up AWS services to catch push notifications
+    """
+
+    # Create a AWS session using the keys specified in config.json.
     session = aws_setup_utils.create_session()
+
+    # Read the config file.
     config = aws_setup_utils.read_config()
 
+    # Create handlers that will create AWS services.
     ec2 = session.client('ec2')
     iam = session.client('iam')
     llambda = session.client('lambda')
     apigateway = session.client('apigateway')
     dynamodb = session.client('dynamodb')
 
+    # Set various configuration parameters.
     role_propagation_wait = 20
-    name = config['awsResourcesName']
+    resource_name = config['awsResourcesName']
     region_name = config['awsRegionName']
 
+    # An account ID is unique to your AWS account. We'll use this to create several resources.
     account_id = get_account_id(ec2)
-    create_iam_role(iam, name)
-    attach_policy(iam, name)
+
+    # An IAM role is a set of permissions that can be assumed by a specified AWS Principal service.
+    create_iam_role(iam, resource_name)
+
+    # Attach a permission to the IAM role we just created.
+    # Services that assume this role will gain this permission.
+    attach_policy(iam, resource_name)
+
+    # Wait for some time for the permission attachment propagate.
     print 'Waiting {} seconds for newly created role to propagate...'.format(role_propagation_wait),
     time.sleep(role_propagation_wait)
     print 'done'
-    create_dynamodb_table(dynamodb, name)
+
+    # Create a DynamoDB table. This is a key-value table that will store our push notifications.
+    create_dynamodb_table(dynamodb, resource_name)
 
     try:
-        create_lambda_function(llambda, name, name, name, account_id)
+        # Create a Lambda function.
+        # This function will be called each time a push notification is received.
+        # This function needs to assume the IAM role we created so it can update items in DynamoDB.
+        create_lambda_function(llambda, resource_name, resource_name, resource_name, account_id)
     except botocore.exceptions.ClientError as err:
         print 'ERROR: Failed to create Lambda function.'
         print 'This may be because the role has not fully propagated.'
@@ -38,11 +60,19 @@ def main():
         print 'Exception: ', str(err)
         sys.exit(1)
 
-    rest_api_id = create_rest_api_gateway(apigateway, name, name, region_name, account_id)
-    add_permission_to_rest_api_to_invoke_lambda(llambda, account_id, rest_api_id, name, region_name)
-    deploy_api(apigateway, name, rest_api_id)
+    # Create an API Gateway.
+    # Push notifications will hit this gateway.
+    # Each time the gateway receives a push notification, it will call the Lambda function.
+    rest_api_id = create_rest_api_gateway(apigateway, resource_name, resource_name, region_name, account_id)
 
-    print "Your push notification endpoint is https://{}.execute-api.{}.amazonaws.com/{}".format(rest_api_id, config['awsRegionName'], name)
+    # Allow the gateway to use our Lambda function.
+    add_permission_to_rest_api_to_invoke_lambda(llambda, account_id, rest_api_id, resource_name, region_name)
+
+    # Deploy our gateway so it has a publicly accessible IP.
+    deploy_api(apigateway, resource_name, rest_api_id)
+
+    print
+    print "Your push notification endpoint is https://{}.execute-api.{}.amazonaws.com/{}".format(rest_api_id, region_name, resource_name)
 
 def get_account_id(ec2):
     print 'Retrieving AWS Account ID...',
@@ -104,36 +134,12 @@ def create_dynamodb_table(dynamodb, table_name):
 
 def create_lambda_function(llambda, lambda_function_name, role_name, dynamodb_table_name, account_id):
     print 'Creating Lambda function...',
-    lambda_function = """
-import json
-import boto3
-import uuid
-import time
 
-dynamodb = boto3.client('dynamodb')
+    lambda_function = open('src/main/python/lambda_function_template.py', 'r').read().replace('DYNAMO_DB_TABLE_NAME', "'" + dynamodb_table_name + "'")
+    lambda_function_file = open('lambda_function.py', 'w')
+    lambda_function_file.write(lambda_function)
+    lambda_function_file.close()
 
-print('Loading function')
-
-def lambda_handler(event, context):
-    print 'request body: ', event
-    push_notification_version = str(event['pushNotificationVersion'])
-    receipt_id = event['subscription']['receiptId']
-    dynamodb.put_item(
-        TableName='"""+dynamodb_table_name+"""',
-        Item={
-            'uuid':                    { 'S': str(uuid.uuid4()) },
-            'timestamp':               { 'N': str(int(time.time())) },
-            'receiptId':               { 'S': receipt_id },
-            'pushNotificationVersion': { 'N': push_notification_version },
-            'pushNotification':        { 'S': json.dumps(event) }
-        }
-    )
-    return ''
-    """
-
-    file = open('lambda_function.py', 'w+')
-    file.write(lambda_function)
-    file.close()
     zip_file = zipfile.ZipFile('lambda_function.zip', mode='w')
     zip_file.write('lambda_function.py')
     zip_file.close()

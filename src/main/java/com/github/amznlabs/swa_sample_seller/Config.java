@@ -39,6 +39,10 @@ public class Config {
         public String redirectUri;
         public String logoutRedirectUrl;
         public int port;
+        public String awsResourcesName;
+        public String awsAccessKeyId;
+        public String awsSecretAccessKey;
+        public String awsRegionName;
     }
 
     /**
