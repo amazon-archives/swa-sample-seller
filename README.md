@@ -1,7 +1,8 @@
 # _WARNING_
 
+* This application is provided for your convenience. Please refer to the SWA Getting Started Guide at https://s3-us-west-2.amazonaws.com/swa-public-documents/integration-guides for detailed information.
 * Deploy Sample Seller only to your local machine.
-* Anyone who visits this web application will have access to confidential data about your seller account and customer accounts.
+* Anyone who visits this web application will have access to confidential data about your seller account.
 
 # Subscribe with Amazon (SWA) Sample Seller
 
@@ -22,7 +23,7 @@ For example, **_[4.1.1]_** refers to section 4.1.1 in the guide.
 
 ## Edit `src/main/resources/config.json`
 
-1. Edit the configuration at `src/main/resources/config.json`:
+1. In `src/main/resources/config.json`
    * Retrieve your client ID and client secret from the Technical Profile of your product. **_[2.4]_**
      * Set `clientId` to your client ID.
      * Set `clientSecret` to your client secret.
@@ -168,7 +169,7 @@ Run `python src/main/python/aws_delete.py`.
   * Amazon only sends push notifications to a **publicly accessible IP** that serves a **trusted SSL certificate**.
   * Sample Seller should not be deployed to a publicly accessible IP.
   * Sample Seller uses a self-signed SSL certificate.
-* Why do I need to use AWS to receive push notifications?
+* Do I need to use AWS to receive push notifications?
   * You do not need to use AWS.
   * You can use any service that serves a publicly accessible IP with a trusted SSL certificate.
   * See `src/main/python/lambda_function.py` for code to process a push notification.
