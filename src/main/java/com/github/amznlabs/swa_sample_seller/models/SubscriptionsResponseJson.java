@@ -1,12 +1,13 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.models;
+
+import lombok.Data;
 
 import java.util.List;
 
+@Data
 public class SubscriptionsResponseJson {
-    public Long nextCursor;
-    public List<SubscriptionJson> subscriptions;
-    public String access_token;
-    public String scope;
-    public String token_type;
-    public Long expires_in;
+    private Long nextCursor;
+    private List<SubscriptionJson> subscriptions;
 }

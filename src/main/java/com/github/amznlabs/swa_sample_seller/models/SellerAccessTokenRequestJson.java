@@ -1,15 +1,27 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+@Data
 public class SellerAccessTokenRequestJson {
-    // These need to be non-static so they parse into JSON properly.
-    public final String grant_type = "client_credentials";
-    public final String scope = "swa:subscriptions";
+    @JsonProperty("grant_type")
+    private String grantType;
 
-    public String client_id;
-    public String client_secret;
+    private String scope;
 
-    public SellerAccessTokenRequestJson(String client_id, String client_secret) {
-        this.client_id = client_id;
-        this.client_secret = client_secret;
+    @JsonProperty("client_id")
+    private String clientId;
+
+    @JsonProperty("client_secret")
+    private String clientSecret;
+
+    public SellerAccessTokenRequestJson(String clientId, String clientSecret) {
+        this.grantType = "client_credentials";
+        this.scope = "swa:subscriptions";
+        this.clientId = clientId;
+        this.clientSecret = clientSecret;
     }
 }

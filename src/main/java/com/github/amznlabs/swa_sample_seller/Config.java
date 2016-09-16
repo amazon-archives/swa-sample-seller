@@ -1,9 +1,12 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.jknack.handlebars.Handlebars;
 import com.github.jknack.handlebars.io.FileTemplateLoader;
 import com.github.jknack.handlebars.io.TemplateLoader;
+import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,8 +21,8 @@ import java.nio.file.Paths;
  * All code should access config parameters through this variable.
  * See http://stackoverflow.com/a/96436 for some justification.
  */
-public class Config {
-    private static final Logger logger = LoggerFactory.getLogger(Config.class);
+public final class Config {
+    private static final Logger LOGGER = LoggerFactory.getLogger(Config.class);
 
     private static final Config INSTANCE = new Config();
     private static final String HANDLEBARS_FILE_EXTENSION = ".hbs";
@@ -32,17 +35,18 @@ public class Config {
     /**
      * config.json parses into this class.
      */
+    @Data
     private static class JsonConfig {
-        public String clientId;
-        public String clientSecret;
-        public String detailPageUrl;
-        public String redirectUri;
-        public String logoutRedirectUrl;
-        public int port;
-        public String awsResourcesName;
-        public String awsAccessKeyId;
-        public String awsSecretAccessKey;
-        public String awsRegionName;
+        private String clientId;
+        private String clientSecret;
+        private String detailPageUrl;
+        private String redirectUri;
+        private String logoutRedirectUrl;
+        private int port;
+        private String awsResourcesName;
+        private String awsAccessKeyId;
+        private String awsSecretAccessKey;
+        private String awsRegionName;
     }
 
     /**
@@ -50,15 +54,15 @@ public class Config {
      */
     private Config() {
         if (!Files.exists(Paths.get(RESOURCE_PATH))) {
-            logger.error("Could not find path to resources. Run JAR file from repo root.");
-            System.exit(1);
+            throw new RuntimeException("Could not find path to resources. Run JAR file from repo root.");
         }
         try {
             jsonConfig = new ObjectMapper().readValue(new File(getResourcePath("/config.json")), JsonConfig.class);
         } catch (IOException e) {
-            logger.error("Failed to read config.json: {}", e);
+            LOGGER.error("Failed to read config.json: {}", e);
         }
-        TemplateLoader loader = new FileTemplateLoader(getResourcePath(HANDLEBARS_DIRECTORY_PATH), HANDLEBARS_FILE_EXTENSION);
+        TemplateLoader loader = new FileTemplateLoader(getResourcePath(HANDLEBARS_DIRECTORY_PATH),
+                HANDLEBARS_FILE_EXTENSION);
         this.handlebars = new Handlebars(loader);
     }
 
@@ -91,7 +95,9 @@ public class Config {
         return jsonConfig.clientSecret;
     }
 
-    public String getDetailPageUrl() { return jsonConfig.detailPageUrl; }
+    public String getDetailPageUrl() {
+        return jsonConfig.detailPageUrl;
+    }
 
     public String getRedirectUri() {
         return jsonConfig.redirectUri;

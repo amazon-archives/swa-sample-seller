@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.controllers.helpers;
 
 import com.github.amznlabs.swa_sample_seller.Config;
@@ -16,7 +18,7 @@ import java.io.IOException;
  * TemplateRenderer provides helper methods to render Handlebars templates.
  */
 public class TemplateRenderer {
-    private static final Logger logger = LoggerFactory.getLogger(TemplateRenderer.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(TemplateRenderer.class);
 
     /**
      * @return A Handlebars context with useful default resolvers.

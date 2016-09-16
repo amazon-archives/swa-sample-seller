@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,7 +26,7 @@ import java.util.Optional;
 @lombok.Data
 @Path("/")
 public class RequestController {
-    private static final Logger logger = LoggerFactory.getLogger(RequestController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestController.class);
 
     /**
      * Landing page.
@@ -63,20 +65,26 @@ public class RequestController {
                 getCustomerProfile(customerAccessToken, apiDumpViewModel);
 
         if (customerProfileResponseJson.isPresent()) {
-            name = customerProfileResponseJson.get().name;
+            name = customerProfileResponseJson.get().getName();
 
             // Use seller's clientId and clientSecret to retrieve seller's access_token.
             Optional<SellerAccessTokenResponseJson> sellerAccessTokenResponseJson =
-                    getSellerAccessToken(Config.getInstance().getClientId(), Config.getInstance().getClientSecret(), apiDumpViewModel);
+                    getSellerAccessToken(
+                            Config.getInstance().getClientId(),
+                            Config.getInstance().getClientSecret(),
+                            apiDumpViewModel);
 
             if (sellerAccessTokenResponseJson.isPresent()) {
                 // Use customer user_id + seller's access_token to retrieve customer subscriptions information.
                 Optional<SubscriptionsResponseJson> subscriptionsResponseJson =
-                        getSubscriptions(customerProfileResponseJson.get().user_id, sellerAccessTokenResponseJson.get().access_token, apiDumpViewModel);
+                        getSubscriptions(
+                                customerProfileResponseJson.get().getUserId(),
+                                sellerAccessTokenResponseJson.get().getAccessToken(),
+                                apiDumpViewModel);
 
                 if (subscriptionsResponseJson.isPresent()) {
                     // Check if this customer has a subscription.
-                    hasSubscription = subscriptionsResponseJson.get().subscriptions.size() > 0;
+                    hasSubscription = subscriptionsResponseJson.get().getSubscriptions().size() > 0;
 
                     // All API calls have succeeded.
                     apiCallsSucceeded = true;
@@ -99,30 +107,31 @@ public class RequestController {
      * Retrieve customer profile with customer access_token.
      * Logs request and response to console and updates viewModel.
      *
-     * @param customerAccessToken
-     * @param apiDumpViewModel
      * @return CustomerProfileResponseJson, or null if the request failed.
      */
-    private static Optional<CustomerProfileResponseJson> getCustomerProfile(String customerAccessToken, ApiDumpViewModel apiDumpViewModel) {
+    private static Optional<CustomerProfileResponseJson> getCustomerProfile(String customerAccessToken,
+                                                                            ApiDumpViewModel apiDumpViewModel) {
         ObjectMapper mapper = new ObjectMapper();
 
         // Retrieve customer profile.
         RequestResponseWrapper requestResponseWrapper = AmazonApiHelpers.requestCustomerProfile(customerAccessToken);
 
         // Bind request/responseWrapper info to logs and viewModel.
-        apiDumpViewModel.setCustomerProfileRequest(requestResponseWrapper.requestWrapper.getRequestViewModel());
-        apiDumpViewModel.setCustomerProfileResponse(requestResponseWrapper.responseWrapper.getResponseViewModel());
-        logger.info("\n{}\n{}", requestResponseWrapper.requestWrapper.dump(), requestResponseWrapper.responseWrapper.dump());
+        apiDumpViewModel.setCustomerProfileRequest(requestResponseWrapper.getRequestWrapper().getRequestViewModel());
+        apiDumpViewModel.setCustomerProfileResponse(requestResponseWrapper.getResponseWrapper().getResponseViewModel());
+        LOGGER.info("\n{}\n{}", requestResponseWrapper.getRequestWrapper().dump(),
+                requestResponseWrapper.getResponseWrapper().dump());
 
         // Check response status.
-        apiDumpViewModel.setCustomerProfileRequestSucceeded(requestResponseWrapper.responseWrapper.getRawResponse().getStatus() == 200);
+        apiDumpViewModel.setCustomerProfileRequestSucceeded(requestResponseWrapper.getResponseWrapper().ok());
 
         if (apiDumpViewModel.getCustomerProfileRequestSucceeded()) {
             // Parse response.
             try {
-                return Optional.of(mapper.readValue(requestResponseWrapper.responseWrapper.getBody(), CustomerProfileResponseJson.class));
+                return Optional.of(mapper.readValue(
+                        requestResponseWrapper.getResponseWrapper().getBody(), CustomerProfileResponseJson.class));
             } catch (IOException e) {
-                logger.error("Failed to parse customer profile response body to JSON.", e);
+                LOGGER.error("Failed to parse customer profile response body to JSON.", e);
                 return Optional.empty();
             }
         } else {
@@ -134,31 +143,33 @@ public class RequestController {
      * Retrieve seller access_token with seller clientId and clientSecret.
      * Logs request and response to console and updates viewModel.
      *
-     * @param clientId
-     * @param clientSecret
-     * @param apiDumpViewModel
      * @return SellerAccessTokenResponseJson, or null if the API request failed.
      */
-    private static Optional<SellerAccessTokenResponseJson> getSellerAccessToken(String clientId, String clientSecret, ApiDumpViewModel apiDumpViewModel) {
+    private static Optional<SellerAccessTokenResponseJson> getSellerAccessToken(String clientId, String clientSecret,
+                                                                                ApiDumpViewModel apiDumpViewModel) {
         ObjectMapper mapper = new ObjectMapper();
 
         // Retrieve seller token.
-        RequestResponseWrapper requestResponseWrapper = AmazonApiHelpers.requestSellerAccessToken(clientId, clientSecret);
+        RequestResponseWrapper requestResponseWrapper = AmazonApiHelpers.requestSellerAccessToken(
+                clientId, clientSecret);
 
         // Bind request/responseWrapper info to logs and viewModel.
-        apiDumpViewModel.setSellerAccessTokenRequest(requestResponseWrapper.requestWrapper.getRequestViewModel());
-        apiDumpViewModel.setSellerAccessTokenResponse(requestResponseWrapper.responseWrapper.getResponseViewModel());
-        logger.info("\n{}\n{}", requestResponseWrapper.requestWrapper.dump(), requestResponseWrapper.responseWrapper.dump());
+        apiDumpViewModel.setSellerAccessTokenRequest(requestResponseWrapper.getRequestWrapper().getRequestViewModel());
+        apiDumpViewModel.setSellerAccessTokenResponse(
+                requestResponseWrapper.getResponseWrapper().getResponseViewModel());
+        LOGGER.info("\n{}\n{}", requestResponseWrapper.getRequestWrapper().dump(),
+                requestResponseWrapper.getResponseWrapper().dump());
 
         // Check response status.
-        apiDumpViewModel.setSellerAccessTokenRequestSucceeded(requestResponseWrapper.responseWrapper.getRawResponse().getStatus() == 200);
+        apiDumpViewModel.setSellerAccessTokenRequestSucceeded(requestResponseWrapper.getResponseWrapper().ok());
 
         if (apiDumpViewModel.getSellerAccessTokenRequestSucceeded()) {
             // Parse response.
             try {
-                return Optional.of(mapper.readValue(requestResponseWrapper.responseWrapper.getBody(), SellerAccessTokenResponseJson.class));
+                return Optional.of(mapper.readValue(
+                        requestResponseWrapper.getResponseWrapper().getBody(), SellerAccessTokenResponseJson.class));
             } catch (IOException e) {
-                logger.error("Failed to parse seller token response body to JSON.", e);
+                LOGGER.error("Failed to parse seller token response body to JSON.", e);
                 return Optional.empty();
             }
         } else {
@@ -168,32 +179,28 @@ public class RequestController {
 
     /**
      * Retrieve customer subscriptions information
-     *
-     * @param userId
-     * @param accessToken
-     * @param apiDumpViewModel
      */
-    private static Optional<SubscriptionsResponseJson> getSubscriptions(String userId, String accessToken, ApiDumpViewModel apiDumpViewModel) {
-        ObjectMapper mapper = new ObjectMapper();
-
+    private static Optional<SubscriptionsResponseJson> getSubscriptions(String userId, String accessToken,
+                                                                        ApiDumpViewModel apiDumpViewModel) {
         // Retrieve subscriptions information.
         RequestResponseWrapper requestResponseWrapper = AmazonApiHelpers.requestSubscriptions(userId, accessToken);
 
         // Bind request/responseWrapper info to logs and viewModel.
-        apiDumpViewModel.setSubscriptionsRequest(requestResponseWrapper.requestWrapper.getRequestViewModel());
-        apiDumpViewModel.setSubscriptionsResponse(requestResponseWrapper.responseWrapper.getResponseViewModel());
-        logger.info("\n{}\n{}", requestResponseWrapper.requestWrapper.dump(), requestResponseWrapper.responseWrapper.dump());
+        apiDumpViewModel.setSubscriptionsRequest(requestResponseWrapper.getRequestWrapper().getRequestViewModel());
+        apiDumpViewModel.setSubscriptionsResponse(requestResponseWrapper.getResponseWrapper().getResponseViewModel());
+        LOGGER.info("\n{}\n{}", requestResponseWrapper.getRequestWrapper().dump(),
+                requestResponseWrapper.getResponseWrapper().dump());
 
         // Check response status.
         // HANDLE SWA API RESPONSE CODE
-        apiDumpViewModel.setSubscriptionsRequestSucceeded(requestResponseWrapper.responseWrapper.getRawResponse().getStatus() == 200);
+        apiDumpViewModel.setSubscriptionsRequestSucceeded(requestResponseWrapper.getResponseWrapper().ok());
 
         if (apiDumpViewModel.getSubscriptionsRequestSucceeded()) {
             // Parse response.
             try {
-                return Optional.of(parseSubscriptionsResponse(requestResponseWrapper.responseWrapper.getBody()));
+                return Optional.of(parseSubscriptionsResponse(requestResponseWrapper.getResponseWrapper().getBody()));
             } catch (IOException e) {
-                logger.error("Failed to parse subscriptions response body to JSON.", e);
+                LOGGER.error("Failed to parse subscriptions response body to JSON.", e);
                 return Optional.empty();
             }
         } else {

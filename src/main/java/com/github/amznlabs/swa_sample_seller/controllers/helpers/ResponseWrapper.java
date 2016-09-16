@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.controllers.helpers;
 
 import com.github.amznlabs.swa_sample_seller.utilities.JsonUtils;
@@ -8,12 +10,14 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Wraps a javax.ws.rs.core.Response.
  */
 public class ResponseWrapper {
-    private static final Logger logger = LoggerFactory.getLogger(ResponseWrapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ResponseWrapper.class);
 
     private Response response;
     private String body;
@@ -40,16 +44,20 @@ public class ResponseWrapper {
         return body;
     }
 
+    public boolean ok() {
+        return response.getStatusInfo().equals(Response.Status.OK);
+    }
+
     /**
      * @return Human-readable dump of the raw HTTP response.
      */
     public String dump() {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(String.format("%d\n", response.getStatus()));
+        stringBuffer.append(String.format("%d%n", response.getStatus()));
         MultivaluedMap<String, String> headers = response.getStringHeaders();
-        for (String key : headers.keySet()) {
-            String valuesList = String.join(",", headers.get(key));
-            stringBuffer.append(String.format("%s: %s\n", key, valuesList));
+        for (Map.Entry<String, List<String>> entry : headers.entrySet()) {
+            String valuesList = String.join(",", entry.getValue());
+            stringBuffer.append(String.format("%s: %s%n", entry.getKey(), valuesList));
         }
         stringBuffer.append(getBody());
         return stringBuffer.toString().trim();

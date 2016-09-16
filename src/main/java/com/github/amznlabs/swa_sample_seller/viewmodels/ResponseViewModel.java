@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.viewmodels;
 
 import lombok.Data;

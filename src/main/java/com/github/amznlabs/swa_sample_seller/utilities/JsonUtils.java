@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.utilities;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,12 +10,12 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 
 public class JsonUtils {
-    private static final Logger logger = LoggerFactory.getLogger(JsonUtils.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(JsonUtils.class);
 
     /**
      * Pretty prints a JSON string.
      *
-     * @param json
+     * @param json A String of valid JSON.
      * @return Pretty printed JSON, or the original json if it can't be pretty printed.
      */
     public static String prettyPrintJson(String json) {

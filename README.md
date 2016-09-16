@@ -8,11 +8,10 @@
 
 Sample Seller is a sample web application storefront that uses LWA and SWA APIs.
 
-## Refer to the documentation
+## Before you start
 
-This README will refer to the SWA Getting Started Guide at https://s3-us-west-2.amazonaws.com/swa-public-documents/integration-guides/SWA_SellerIntegrationGuide.pdf
-
-For example, **_[4.1.1]_** refers to section 4.1.1 in the guide.
+* This README will refer to the SWA Getting Started Guide at https://s3-us-west-2.amazonaws.com/swa-public-documents/integration-guides/SWA_SellerIntegrationGuide.pdf. For example, **_[4.1.1]_** refers to section 4.1.1 in the guide.
+* `path/to/repo` represents the root directory of the Sample Seller repository you've downloaded. `README.md` is in the root directory.
 
 ## Install dependencies
 
@@ -24,7 +23,7 @@ For example, **_[4.1.1]_** refers to section 4.1.1 in the guide.
 ## Edit `src/main/resources/config.json`
 
 1. In `src/main/resources/config.json`
-   * Retrieve your client ID and client secret from the Technical Profile of your product. **_[2.4]_**
+   * Retrieve your **Client ID** and **Client Secret Key** from the **Technical Details** of your product.
      * Set `clientId` to your client ID.
      * Set `clientSecret` to your client secret.
    * Set `detailPageUrl` to the URL for the detail page of your product.
@@ -47,20 +46,18 @@ For example, **_[4.1.1]_** refers to section 4.1.1 in the guide.
 
 ## Build Sample Seller
 
-`path/to/repo` represents the root directory of the Sample Seller repository you've downloaded. `README.md` is in the root directory.
-
-```bash
-cd path/to/repo  # Switch to the repo root directory.
-mvn package      # Build the program with Maven.
+```
+cd path/to/repo    # Switch to the repo root directory.
+mvn package        # Build the program with Maven.
 ```
 
 ## Run Sample Seller
 
 1. Run the JAR file to start the web application:
 
-```bash
-cd path/to/repo                                       # Switch to the repo root directory.
-java -jar target/swa_sample_seller-1.0-SNAPSHOT.jar   # Run the JAR file.
+```
+cd path/to/repo                                         # Switch to the repo root directory.
+java -jar target/swa_sample_seller-1.0-SNAPSHOT.jar     # Run the JAR file.
 ```
 
 2. Visit the application at `https://127.0.0.1:port`
@@ -105,16 +102,24 @@ You **do not** have to use AWS to implement your endpoint. See the FAQ section f
 
 ## Setup Python and AWS
 
-* Install Python 2.7 from https://www.python.org/downloads/
-* Create an AWS account at https://aws.amazon.com/
-* Create an IAM user named `swa_sample_seller` with the `AdministratorAccess` permission.
+1. Install Python 2.7 from https://www.python.org/downloads/
+2. Verify your installation by running `python` and `pip` from your terminal.
+3. Install the Python `boto3` library: 
+
+```
+pip install boto3
+```
+
+## Setup AWS
+
+1. Create an AWS account at https://aws.amazon.com/
+2. Create an IAM user named `swa_sample_seller` with the `AdministratorAccess` permission.
   * See http://docs.aws.amazon.com/lambda/latest/dg/setting-up.html
   * **Make note of your access key ID and access key secret.**
-* Run `pip install boto3` to install the Python `boto3` library.
 
 ## Edit `src/main/resources/config.json`
 
-1. Set`awsAccessKeyId` to your user's access key ID.
+1. Set `awsAccessKeyId` to your user's access key ID.
 2. Set `awsSecretAccessKey` to your user's secret access key.
 3. _[Optional]_ Change `awsResourcesName` to a name of your choice.
     * Ex: `sample_seller_resources`
@@ -125,24 +130,30 @@ You **do not** have to use AWS to implement your endpoint. See the FAQ section f
 
 ## Create a sample endpoint to catch push notifications
 
-1. Run `python src/main/python/aws_create.py`
+1. Run: 
+
+```
+cd path/to/repo
+python src/main/python/aws_create.py
+```
+
 2. Make note of the endpoint printed out by the script.
     * Ex: `Your push notification endpoint is YOUR_ENDPOINT`
 
 ![Console output of running aws_create.py](aws_create.png)
 
-## Send a test notification
-
-1. See **_[4.2.5]_**.
-2. Visit https://sellercentral.amazon.com/swa/dashboard.
-3. Edit the **Technical Profile** of your product.
-4. Continue to the **Push Notifications** page.
-5. Set the push notifications endpoint field to `YOUR_ENDPOINT`
-6. Click **Send Test Notification**.
+## Send a test notification **_[4.2.5]_**
+1. Visit https://sellercentral.amazon.com/swa/dashboard.
+2. Edit the **Technical Details** of your product.
+3. Continue to the **Push Notifications** page.
+4. Set the **Enter your HTTPS endpoint** field to `YOUR_ENDPOINT`
+5. Click **Send Test Notification**.
 
 ## View the test notification
 
-In your DynamoDB dashboard, view the table with the name of your `awsResourcesName` field.
+1. In your DynamoDB dashboard, view the **Table** with the name of your `awsResourcesName` field.
+2. View the **Items** of the table.
+3. Verify that there is an entry for the test push notification you just sent.
 
 ## View a real push notification
 
@@ -151,14 +162,19 @@ In your DynamoDB dashboard, view the table with the name of your `awsResourcesNa
 
 ## Delete your sample endpoint
 
-Run `python src/main/python/aws_delete.py`.
+Run:
+
+```
+cd path/to/repo
+python src/main/python/aws_delete.py
+```
 
 ![Console output of running aws_delete.py](aws_delete.png)
 
 ## View code snippets
 
 * Read the comments in `src/main/python/aws_create.py` for a better understanding what AWS services will be setup.
-* Read `src/main/python/lambda_function.template.py` for code that processes an push notification.
+* Read `src/main/python/lambda_function_template.py` for code that processes a push notification.
 
 # FAQ
 

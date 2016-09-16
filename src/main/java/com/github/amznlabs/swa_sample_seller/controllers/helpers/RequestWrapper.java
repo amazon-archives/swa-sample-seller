@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.controllers.helpers;
 
 import com.github.amznlabs.swa_sample_seller.utilities.JsonUtils;
@@ -13,7 +15,7 @@ import javax.ws.rs.client.ClientRequestFilter;
  * Used to catch and wrap outgoing client requests.
  */
 public class RequestWrapper implements ClientRequestFilter {
-    private static final Logger logger = LoggerFactory.getLogger(RequestWrapper.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(RequestWrapper.class);
 
     private ClientRequestContext clientRequestContext;
     private String body;
@@ -29,11 +31,11 @@ public class RequestWrapper implements ClientRequestFilter {
      * Called by JAX-RS client when request is sent.
      * Saves request information for later use.
      *
-     * @param clientRequestContext Information about the request.
+     * @param crc Information about the request.
      */
     @Override
-    public void filter(ClientRequestContext clientRequestContext) {
-        this.clientRequestContext = clientRequestContext;
+    public void filter(ClientRequestContext crc) {
+        this.clientRequestContext = crc;
     }
 
     /**
@@ -48,12 +50,13 @@ public class RequestWrapper implements ClientRequestFilter {
      */
     public String dump() {
         StringBuffer stringBuffer = new StringBuffer();
-        stringBuffer.append(String.format("%s %s\n", clientRequestContext.getMethod(), clientRequestContext.getUri().toString()));
+        stringBuffer.append(String.format("%s %s%n",
+                clientRequestContext.getMethod(), clientRequestContext.getUri().toString()));
         for (String key : clientRequestContext.getHeaders().keySet()) {
             String valuesList = clientRequestContext.getHeaderString(key);
-            stringBuffer.append(String.format("%s: %s\n", key, valuesList));
+            stringBuffer.append(String.format("%s: %s%n", key, valuesList));
         }
-        return stringBuffer.toString().trim() + "\n" + getBody();
+        return stringBuffer.toString().trim() + "%n" + getBody();
     }
 
     /**

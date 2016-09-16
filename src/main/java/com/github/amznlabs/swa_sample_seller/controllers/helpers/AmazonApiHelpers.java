@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.controllers.helpers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -22,7 +24,9 @@ public class AmazonApiHelpers {
      * https://images-na.ssl-images-amazon.com/images/G/01/lwa/dev/docs/website-developer-guide._TTH_.pdf.
      *
      * @param accessToken The access token returned by LWA. See https://login.amazon.com/glossary#access_token.
-     * @return ResponseViewModel containing the customer's profile. See https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/customer_profile.html
+     * @return ResponseViewModel containing the customer's profile.
+     * <p>
+     * See https://developer.amazon.com/public/apis/engage/login-with-amazon/docs/customer_profile.html
      */
     public static RequestResponseWrapper requestCustomerProfile(String accessToken) {
         RequestWrapper requestWrapper = new RequestWrapper("");
@@ -53,7 +57,8 @@ public class AmazonApiHelpers {
      * @return ResponseViewModel containing the access token.
      */
     public static RequestResponseWrapper requestSellerAccessToken(String clientId, String clientSecret) {
-        SellerAccessTokenRequestJson sellerAccessTokenRequestJson = new SellerAccessTokenRequestJson(clientId, clientSecret);
+        SellerAccessTokenRequestJson sellerAccessTokenRequestJson =
+                new SellerAccessTokenRequestJson(clientId, clientSecret);
         String sellerAccessTokenRequestString = null;
         try {
             sellerAccessTokenRequestString = new ObjectMapper().writeValueAsString(sellerAccessTokenRequestJson);

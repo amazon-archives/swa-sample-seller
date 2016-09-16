@@ -1,3 +1,5 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller;
 
 import com.github.amznlabs.swa_sample_seller.controllers.RequestController;
@@ -10,20 +12,29 @@ import org.jboss.resteasy.plugins.server.sun.http.SunHttpJaxrsServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.net.ssl.*;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLParameters;
+import javax.net.ssl.TrustManagerFactory;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.security.*;
+import java.security.KeyManagementException;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
-
+import java.security.KeyStore;
 
 public class Main {
-    private static final Logger logger = LoggerFactory.getLogger(Main.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String[] args) throws CertificateException, UnrecoverableKeyException, NoSuchAlgorithmException, IOException, KeyManagementException, KeyStoreException {
+    public static void main(String[] args) throws CertificateException, UnrecoverableKeyException,
+            NoSuchAlgorithmException, IOException, KeyManagementException, KeyStoreException {
         // Create sun server
-        HttpServer sunServer = createHttpsServer(Config.getInstance().getResourcePath("/key.jks"), Config.getInstance().getPort());
+        HttpServer sunServer = createHttpsServer(
+                Config.getInstance().getResourcePath("/key.jks"), Config.getInstance().getPort());
 
         // Wrap sun server in a JAX-RS interface
         SunHttpJaxrsServer jaxrsServer = new SunHttpJaxrsServer();
@@ -35,7 +46,7 @@ public class Main {
 
         // Start server
         jaxrsServer.start();
-        logger.info("Server started at https://127.0.0.1:{}", Config.getInstance().getPort());
+        LOGGER.info("Server started at https://127.0.0.1:{}", Config.getInstance().getPort());
     }
 
     /**
@@ -52,7 +63,8 @@ public class Main {
      * @throws UnrecoverableKeyException
      * @throws KeyManagementException
      */
-    private static HttpsServer createHttpsServer(String keyPath, int port) throws NoSuchAlgorithmException, IOException, KeyStoreException, CertificateException, UnrecoverableKeyException, KeyManagementException {
+    private static HttpsServer createHttpsServer(String keyPath, int port) throws NoSuchAlgorithmException,
+            IOException, KeyStoreException, CertificateException, UnrecoverableKeyException, KeyManagementException {
         // setup the socket address
         InetSocketAddress address = new InetSocketAddress(port);
 
@@ -63,8 +75,9 @@ public class Main {
         // initialize the keystore
         char[] password = "password".toCharArray();
         KeyStore javaKeyStore = KeyStore.getInstance("JKS");
-        FileInputStream fileInputStream = new FileInputStream(keyPath);
-        javaKeyStore.load(fileInputStream, password);
+        try (FileInputStream fileInputStream = new FileInputStream(keyPath)) {
+            javaKeyStore.load(fileInputStream, password);
+        }
 
         // setup the key manager factory
         KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance("SunX509");
@@ -90,7 +103,7 @@ public class Main {
                     SSLParameters defaultSSLParameters = sslContext.getDefaultSSLParameters();
                     httpsParameters.setSSLParameters(defaultSSLParameters);
                 } catch (Exception e) {
-                    logger.error("Failed to configure the HTTPS parameters for an incoming connection: {}", e);
+                    LOGGER.error("Failed to configure the HTTPS parameters for an incoming connection: {}", e);
                 }
             }
         });

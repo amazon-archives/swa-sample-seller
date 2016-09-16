@@ -1,8 +1,19 @@
+// Copyright 2016 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
 package com.github.amznlabs.swa_sample_seller.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+@Data
 public class CustomerProfileResponseJson {
-    public String email;
-    public String name;
-    public String postal_code;
-    public String user_id;
+    private String email;
+
+    private String name;
+
+    @JsonProperty("postal_code")
+    private String postalCode;
+
+    @JsonProperty("user_id")
+    private String userId;
 }
