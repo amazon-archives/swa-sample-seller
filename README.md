@@ -8,6 +8,10 @@
 
 Sample Seller is a sample web application storefront that uses LWA and SWA APIs.
 
+![Screenshot of login page](screenshots/login.png)
+
+![Screenshot of subscriptions page](screenshots/subscriptions.png)
+
 ## Before you start
 
 * This README will refer to the SWA Getting Started Guide at https://s3-us-west-2.amazonaws.com/swa-public-documents/integration-guides/SWA_SellerIntegrationGuide.pdf. For example, **_[4.1.1]_** refers to section 4.1.1 in the guide.
@@ -22,27 +26,28 @@ Sample Seller is a sample web application storefront that uses LWA and SWA APIs.
 
 ## Edit `src/main/resources/config.json`
 
-1. In `src/main/resources/config.json`
-   * Retrieve your **Client ID** and **Client Secret Key** from the **Technical Details** of your product.
-     * Set `clientId` to your client ID.
-     * Set `clientSecret` to your client secret.
-   * Set `detailPageUrl` to the URL for the detail page of your product.
-   * Set `port` to an open port you want to serve Sample Seller on.
-     * Ex: `8444`
-   * Set `redirectUri` to `https://127.0.0.1:port/login`
-     * Ex: `https://127.0.0.1:8444/login`
-     * In Sample Seller, we want LWA to redirect the user to the `/login` path so Sample Seller can query and display the user's subscriptions information.
-   * Set `logoutRedirectUri` to `https://127.0.0.1:port`.
-     * Ex: `https://127.0.0.1:8444`
-     * In Sample Seller, we want to redirect the user to the landing page.
-2. Configure your LWA application. **_[2.4]_**
-   * Sign into the App Console at http://login.amazon.com/manageApps.
-   * Select the LWA application associated with your SWA subscription.
-   * Expand the "Web Settings" tab.
-   * Add `https://127.0.0.1:port` to "Allowed JavaScript Origins"
-     * Ex: `https://127.0.0.1:8444`
-   * Add `redirectUri` to "Allowed Return URLs".
-     * Ex: `https://127.0.0.1:8444/login`
+1. Retrieve your **Client ID** and **Client Secret Key** from the **Technical Details** of your product.
+   1. Set `clientId` to your client ID.
+   2. Set `clientSecret` to your client secret.
+2. Set `detailPageUrl` to the URL for the detail page of your product.
+3. Set `port` to an open port you want to serve Sample Seller on.
+   * Ex: `8444`
+4. Set `redirectUri` to `https://127.0.0.1:port/login`
+   * Ex: `https://127.0.0.1:8444/login`
+   * In Sample Seller, we want LWA to redirect the user to the `/login` path so Sample Seller can query and display the user's subscriptions information.
+5. Set `logoutRedirectUri` to `https://127.0.0.1:port`.\
+   * Ex: `https://127.0.0.1:8444`
+   * In Sample Seller, we want to redirect the uselr to the landing page.
+
+##  Configure your LWA application. **_[2.4]_**
+
+1. Sign into the App Console at http://login.amazon.com/manageApps.
+2. Select the LWA application associated with your SWA subscription.
+3. Expand the "Web Settings" tab.
+4. Add `https://127.0.0.1:port` to "Allowed JavaScript Origins"
+  * Ex: `https://127.0.0.1:8444`
+5. Add `redirectUri` to "Allowed Return URLs".
+  * Ex: `https://127.0.0.1:8444/login`
 
 ## Build Sample Seller
 
@@ -55,22 +60,27 @@ mvn package        # Build the program with Maven.
 
 1. Run the JAR file to start the web application:
 
-```
-cd path/to/repo                                         # Switch to the repo root directory.
-java -jar target/swa_sample_seller-1.0-SNAPSHOT.jar     # Run the JAR file.
-```
+    ```
+    cd path/to/repo                                         # Switch to the repo root directory.
+    java -jar target/swa_sample_seller-1.0-SNAPSHOT.jar     # Run the JAR file.
+    ```
 
 2. Visit the application at `https://127.0.0.1:port`
+   * Ex `https://127.0.0.1:8444`
 
 ## Take a tour of Sample Seller
 
 1. Visit the index page at [https://127.0.0.1:port](https://127.0.0.1:port).
    * Ex: [https://127.0.0.1:8444](https://127.0.0.1:8444)
-2. _[Optional]_ Visit `detailPageUrl` and purchase a subscription.
-3. Click the LWA button and sign in with any Amazon account.
-4. Check out the dump of API requests/responses on the current page.
-    * If you logged in with an account that has purchased a subscription, then you should see a non-empty subscriptions response.
-    * If not, then you should see an empty subscriptions response.
+2. Click the **Login with Swanly** button.
+3. Click the LWA button and login with an Amazon account that has not purchased your subscription.
+4. Verify that you see a **Subscribe Now** button.
+5. Expand the **Information for developers** tab.
+6. Scroll to the bottom
+7. Verify that you do not see any `ACTIVE` subscriptions in the **Subscriptions Response** body.
+8. Logout.
+9. Click the LWA button and login with an Amazon account that has purchased your subscription.
+10. Verify that you see at least 1 `ACTIVE` subscriptions in the **Subscriptions Response** body.
 
 ## View code snippets
 
@@ -78,7 +88,7 @@ java -jar target/swa_sample_seller-1.0-SNAPSHOT.jar     # Run the JAR file.
    * Ex: `view-source:https://127.0.0.1:8444`
 * View code for making the API requests:
     * In `src/main/java/com/github/amznlabs/swa_sample_seller/controllers/helpers/AmazonApiHelpers.java`
-      * Customer profile 
+      * Customer profile
         * See `// REQUEST CUSTOMER PROFILE`
         * **_[4.1.1, Step 3]_**
       * Security API
@@ -100,15 +110,15 @@ Sample Push Notification Endpoint is a collection of services running on Amazon 
 
 You **do not** have to use AWS to implement your endpoint. See the FAQ section for more information.
 
-## Setup Python and AWS
+## Setup Python
 
-1. Install Python 2.7 from https://www.python.org/downloads/
+1. Install Python 2 or Python 3 from https://www.python.org/downloads/
 2. Verify your installation by running `python` and `pip` from your terminal.
-3. Install the Python `boto3` library: 
+3. Install the Python `boto3` library:
 
-```
-pip install boto3
-```
+    ```
+    pip install boto3
+    ```
 
 ## Setup AWS
 
@@ -130,17 +140,17 @@ pip install boto3
 
 ## Create a sample endpoint to catch push notifications
 
-1. Run: 
+1. Run:
 
-```
-cd path/to/repo
-python src/main/python/aws_create.py
-```
+    ```
+    cd path/to/repo
+    python src/main/python/aws_create.py
+    ```
 
 2. Make note of the endpoint printed out by the script.
-    * Ex: `Your push notification endpoint is YOUR_ENDPOINT`
+   * Ex: `Your push notification endpoint is YOUR_ENDPOINT`
 
-![Console output of running aws_create.py](aws_create.png)
+![Console output of running aws_create.py](screenshots/aws_create.png)
 
 ## Send a test notification **_[4.2.5]_**
 1. Visit https://sellercentral.amazon.com/swa/dashboard.
@@ -169,7 +179,7 @@ cd path/to/repo
 python src/main/python/aws_delete.py
 ```
 
-![Console output of running aws_delete.py](aws_delete.png)
+![Console output of running aws_delete.py](screenshots/aws_delete.png)
 
 ## View code snippets
 

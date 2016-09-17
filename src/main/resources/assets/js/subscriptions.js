@@ -21,9 +21,14 @@ $('#dev-info-arrow').click(
         $('#dev-info-content').toggle();
     }
 )
-$('.play').click(
+$('.play-sample-alert').click(
     function() {
         alert("This would play a sample of a song.");
+    }
+)
+$('.play-full-alert').click(
+    function() {
+        alert("This would play a full a song.");
     }
 )
 $('.play').hover(

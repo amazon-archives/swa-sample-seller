@@ -16,14 +16,14 @@ def run_operation(message, aws_operation):
     :param aws_operation: operation to run
     """
 
-    print message,
+    print(message),
     try:
         aws_operation()
     except Exception as err:
-        print 'AWS error'
-        print str(err)
+        print('AWS error')
+        print(str(err))
     else:
-        print 'done'
+        print('done')
 
 def delete_dynamo_db():
     dynamodb.delete_table(TableName=name)

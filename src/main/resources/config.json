@@ -1,12 +1,12 @@
 {
-  "clientId" : "YOUR_CLIENT_ID",
-  "clientSecret" : "YOUR_CLIENT_SECRET",
-  "detailPageUrl": "YOUR_DETAIL_PAGE_URL",
-  "port": "YOUR_PORT",
-  "redirectUri": "YOUR_REDIRECT_URI",
-  "logoutRedirectUrl" : "YOUR_LOGOUT_REDIRECT_URL",
+  "clientId" : "",
+  "clientSecret" : "",
+  "detailPageUrl": "",
+  "port": "",
+  "redirectUri": "",
+  "logoutRedirectUrl" : "",
   "awsResourcesName": "swa_sample_seller",
-  "awsAccessKeyId": "YOUR_AWS_ACCESS_KEY_ID",
-  "awsSecretAccessKey": "YOUR_AWS_SECRET_ACCESS_KEY",
+  "awsAccessKeyId": "",
+  "awsSecretAccessKey": "",
   "awsRegionName": "us-west-2"
 }

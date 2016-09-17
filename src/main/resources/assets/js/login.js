@@ -13,6 +13,16 @@ $('#sign-in-img').click(
 );
 $('#sign-in-img').click(
     function() {
-        alert('This should take you to a page to link your Swanly and LWA accounts.');
+        alert('This would log you in with Swanly\'s non-LWA account system. This should take you to a page to link your Swanly and LWA accounts.');
+    }
+);
+$('#terms-of-use').click(
+    function() {
+        alert('This would open a page containing your Terms of Use.');
+    }
+);
+$('#privacy-policy').click(
+    function() {
+        alert('This would open a page containing your Privacy Policy.');
     }
 );

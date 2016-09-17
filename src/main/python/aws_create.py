@@ -39,9 +39,9 @@ def main():
     attach_policy(iam, resource_name)
 
     # Wait for some time for the permission attachment propagate.
-    print 'Waiting {} seconds for newly created role to propagate...'.format(role_propagation_wait),
+    print('Waiting {} seconds for newly created role to propagate...'.format(role_propagation_wait)),
     time.sleep(role_propagation_wait)
-    print 'done'
+    print('done')
 
     # Create a DynamoDB table. This is a key-value table that will store our push notifications.
     create_dynamodb_table(dynamodb, resource_name)
@@ -52,12 +52,12 @@ def main():
         # This function needs to assume the IAM role we created so it can update items in DynamoDB.
         create_lambda_function(llambda, resource_name, resource_name, resource_name, account_id)
     except botocore.exceptions.ClientError as err:
-        print 'ERROR: Failed to create Lambda function.'
-        print 'This may be because the role has not fully propagated.'
-        print 'Run python src/main/python/aws_delete.py to delete resources.'
-        print 'Increase the role_propagation_wait variable in this file.'
-        print 'Run python src/main/python/aws_create.py to try again.'
-        print 'Exception: ', str(err)
+        print('ERROR: Failed to create Lambda function.')
+        print('This may be because the role has not fully propagated.')
+        print('Run python src/main/python/aws_delete.py to delete resources.')
+        print('Increase the role_propagation_wait variable in this file.')
+        print('Run python src/main/python/aws_create.py to try again.')
+        print('Exception: '), str(err)
         sys.exit(1)
 
     # Create an API Gateway.
@@ -71,17 +71,17 @@ def main():
     # Deploy our gateway so it has a publicly accessible IP.
     deploy_api(apigateway, resource_name, rest_api_id)
 
-    print
-    print "Your push notification endpoint is https://{}.execute-api.{}.amazonaws.com/{}".format(rest_api_id, region_name, resource_name)
+    print('')
+    print('Your push notification endpoint is https://{}.execute-api.{}.amazonaws.com/{}'.format(rest_api_id, region_name, resource_name))
 
 def get_account_id(ec2):
-    print 'Retrieving AWS Account ID...',
+    print('Retrieving AWS Account ID...'),
     account_id = ec2.describe_security_groups(GroupNames=['Default'])['SecurityGroups'][0]['OwnerId']
-    print 'done'
+    print('done')
     return account_id
 
 def create_iam_role(iam, role_name):
-    print 'Creating IAM role...',
+    print('Creating IAM role...'),
     iam.create_role(RoleName=role_name, AssumeRolePolicyDocument="""{
         "Version": "2012-10-17",
         "Statement": [
@@ -94,15 +94,15 @@ def create_iam_role(iam, role_name):
             }
         ]
     }""")
-    print 'done'
+    print('done')
 
 def attach_policy(iam, role_name):
-    print 'Attaching policy to IAM role...',
+    print('Attaching policy to IAM role...'),
     iam.attach_role_policy(RoleName=role_name, PolicyArn='arn:aws:iam::aws:policy/AmazonDynamoDBFullAccess')
-    print 'done'
+    print('done')
 
 def create_dynamodb_table(dynamodb, table_name):
-    print 'Creating DynamoDB Table...',
+    print('Creating DynamoDB Table...'),
     dynamodb.create_table(
         AttributeDefinitions=[
             {
@@ -130,10 +130,10 @@ def create_dynamodb_table(dynamodb, table_name):
             "ReadCapacityUnits": 5
         }
     )
-    print 'done'
+    print('done')
 
 def create_lambda_function(llambda, lambda_function_name, role_name, dynamodb_table_name, account_id):
-    print 'Creating Lambda function...',
+    print('Creating Lambda function...'),
 
     lambda_function = open('src/main/python/lambda_function_template.py', 'r').read().replace('DYNAMO_DB_TABLE_NAME', "'" + dynamodb_table_name + "'")
     lambda_function_file = open('lambda_function.py', 'w')
@@ -151,10 +151,10 @@ def create_lambda_function(llambda, lambda_function_name, role_name, dynamodb_ta
         Handler='lambda_function.lambda_handler',
         Code={'ZipFile': open('lambda_function.zip', 'rb').read()}
     )
-    print 'done'
+    print('done')
 
 def create_rest_api_gateway(apigateway, rest_api_name, lambda_function_name, region_name, account_id):
-    print 'Creating REST API Gateway...',
+    print('Creating REST API Gateway...'),
     rest_api_id = apigateway.create_rest_api(name=rest_api_name)['id']
     resource_id = apigateway.get_resources(restApiId=rest_api_id)['items'][0]['id']
 
@@ -195,11 +195,11 @@ def create_rest_api_gateway(apigateway, rest_api_name, lambda_function_name, reg
         responseTemplates={"application/json": "null"}
     )
 
-    print 'done'
+    print('done')
     return rest_api_id
 
 def add_permission_to_rest_api_to_invoke_lambda(llambda, account_id, rest_api_id, lambda_function_name, region_name):
-    print 'Adding permission to allow API Gateway to invoke Lambda...',
+    print('Adding permission to allow API Gateway to invoke Lambda...'),
 
     rest_api_arn = 'arn:aws:execute-api:{}:{}:{}/*/POST/'.format(region_name, account_id, rest_api_id)
 
@@ -211,15 +211,15 @@ def add_permission_to_rest_api_to_invoke_lambda(llambda, account_id, rest_api_id
         SourceArn=rest_api_arn
     )
 
-    print 'done'
+    print('done')
 
 def deploy_api(apigateway, stage_name, rest_api_id):
-    print 'Deploying REST API Gateway...',
+    print('Deploying REST API Gateway...'),
     apigateway.create_deployment(
         restApiId=rest_api_id,
         stageName=stage_name
     )
-    print 'done'
+    print('done')
 
 if __name__ == '__main__':
     main()

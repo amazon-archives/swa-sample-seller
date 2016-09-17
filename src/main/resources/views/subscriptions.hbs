@@ -60,11 +60,11 @@
             <div class="song-length">{{length}}</div>
             <div class="vertical-divider"></div>
             {{#if hasSubscription}}
-                <div class="play">
+                <div class="play play-full-alert">
                     <img class="play-icon-center" src="assets/images/play_icon.png"/>
                 </div>
             {{else}}
-                <div class="play">
+                <div class="play play-sample-alert">
                     <div class="play-sample">play sample</div>
                     <img class="play-icon-sample" src="assets/images/play_icon.png"/>
                 </div>
@@ -80,7 +80,7 @@
         <div id="subscription-message">
             {{#if apiCallsSucceeded}}
                 {{#if hasSubscription}}
-                    Enjoy your subscription!
+                    You have {{numActiveSubscriptions}} active subscription(s). Enjoy!
                 {{else}}
                     Please purchase a subscription
                 {{/if}}

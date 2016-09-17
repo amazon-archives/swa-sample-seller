@@ -9,6 +9,7 @@ import com.github.amznlabs.swa_sample_seller.controllers.helpers.RequestResponse
 import com.github.amznlabs.swa_sample_seller.controllers.helpers.TemplateRenderer;
 import com.github.amznlabs.swa_sample_seller.models.CustomerProfileResponseJson;
 import com.github.amznlabs.swa_sample_seller.models.SellerAccessTokenResponseJson;
+import com.github.amznlabs.swa_sample_seller.models.SubscriptionJson;
 import com.github.amznlabs.swa_sample_seller.models.SubscriptionsResponseJson;
 import com.github.amznlabs.swa_sample_seller.viewmodels.ApiDumpViewModel;
 import org.slf4j.Logger;
@@ -57,7 +58,7 @@ public class RequestController {
     public String login(@QueryParam("access_token") String customerAccessToken) throws IOException {
         ApiDumpViewModel apiDumpViewModel = new ApiDumpViewModel();
         boolean apiCallsSucceeded = false;
-        boolean hasSubscription = false;
+        int numActiveSubscriptions = 0;
         String name = "NAME NOT FOUND";
 
         // customer access token -> customer profile.
@@ -83,8 +84,12 @@ public class RequestController {
                                 apiDumpViewModel);
 
                 if (subscriptionsResponseJson.isPresent()) {
-                    // Check if this customer has a subscription.
-                    hasSubscription = subscriptionsResponseJson.get().getSubscriptions().size() > 0;
+                    // Check how many active subscriptions this customer has.
+                    for (SubscriptionJson subscriptionJson : subscriptionsResponseJson.get().getSubscriptions()) {
+                        if (subscriptionJson.getStatus().equals("ACTIVE")) {
+                            numActiveSubscriptions += 1;
+                        }
+                    }
 
                     // All API calls have succeeded.
                     apiCallsSucceeded = true;
@@ -92,11 +97,14 @@ public class RequestController {
             }
         }
 
+        boolean hasSubscription = numActiveSubscriptions > 0;
+
         return TemplateRenderer
                 .compile("subscriptions").apply(TemplateRenderer
                         .newContextBuilder()
                         .combine("config", Config.getInstance())
                         .combine("apiCallsSucceeded", apiCallsSucceeded)
+                        .combine("numActiveSubscriptions", numActiveSubscriptions)
                         .combine("hasSubscription", hasSubscription)
                         .combine("apiDump", apiDumpViewModel)
                         .combine("name", name)
